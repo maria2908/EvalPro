@@ -6,7 +6,6 @@ async function startApp() {
         await initDatabase();
         console.log('Database initialized. Running app logic...');
     
-        // Example query to test
         db.all('SELECT * FROM Schueler;', (err, rows) => {
           if (err) {
             console.error('Query error:', err.message);
