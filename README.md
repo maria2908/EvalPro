@@ -1,7 +1,7 @@
 # EvalPro
 
 This Node.js project provides a system to manage and evaluate practical exams.  
-It allows exam committees to record scores, evaluate project documentation and presentations, conduct oral exams, calculate overall results, and manage all exam data!
+It allows exam committees to record scores, evaluate project documentation and presentations, conduct oral exams, calculate overall results, and manage all exam data.
 
 ---
 
