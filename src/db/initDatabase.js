@@ -1,4 +1,4 @@
-const db = require('./connection');
+const db = require('../config/connection.js');
 const createTables = require('./createTables.js');
 
 function initDatabase() {
