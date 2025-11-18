@@ -103,14 +103,14 @@ function createTables(db) {
             COMMIT;
         `;
 
-    db.exec(schema, (err) => {
-        if (err) {
-            console.error('Error creating tables:', err.message);
-            reject(err);
-        } else {
-            console.log('Tables created successfully!');
-            resolve();
-        }
+        db.exec(schema, (err) => {
+            if (err) {
+                console.error('Error creating tables:', err.message);
+                reject(err);
+            } else {
+                console.log('Tables created successfully!');
+                resolve();
+            }
         });
     });
 }
