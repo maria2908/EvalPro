@@ -1,24 +1,35 @@
+// service/muendliche_ZusatzpruefungService.js
 const db = require('../config/connection');
 
-function insertMuendliche_Zusatzpruefung(data, callback) {
+/**
+ * Insert a new mündliche Zusatzprüfung into database
+ *
+ * @param {Object} zusatzpruefung
+ * @param {string} zusatzpruefung.pruefungsbereich
+ * @param {number} zusatzpruefung.punktzahl
+ * @returns {Promise<{id: number}>}
+ */
+function insertMuendliche_Zusatzpruefung(zusatzpruefung) {
   const sql = `
     INSERT INTO muendliche_Zusatzpruefung (pruefungsbereich, punktzahl)
     VALUES (?, ?)
   `;
 
-  const params = [
-      data.pruefungsbereich,
-      data.punktzahl
-    ];
+  const values = [
+    zusatzpruefung.pruefungsbereich,
+    zusatzpruefung.punktzahl
+  ];
 
-  db.run(sql, params, function (err) {
-    if (err) {
-      console.error('Insert error:', err.message);
-      callback(err);
-    } else {
-      console.log('Insert successful, ID:', this.lastID);
-      callback(null, { id: this.lastID });
-    }
+  return new Promise((resolve, reject) => {
+    db.run(sql, values, function (err) {
+      if (err) {
+        console.error('Insert mündliche Zusatzprüfung error:', err.message);
+        return reject(err);
+      }
+
+      // SQLite liefert die ID des neu angelegten Datensatzes
+      resolve({ id: this.lastID });
+    });
   });
 }
 

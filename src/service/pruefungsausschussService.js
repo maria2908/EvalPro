@@ -1,26 +1,41 @@
+// service/pruefungsausschussService.js
 const db = require('../config/connection');
 
-function insertPruefungsausschuss(data, callback) {
+/**
+ * Insert a new Pruefungsausschuss into database
+ *
+ * @param {Object} pruefungsausschuss
+ * @param {string} pruefungsausschuss.bezeichnung
+ * @param {string} pruefungsausschuss.ausbildungsberuf
+ * @param {string|number} pruefungsausschuss.pruefungstage
+ * @returns {Promise<{id: number}>}
+ */
+function insertPruefungsausschuss(pruefungsausschuss) {
   const sql = `
-    INSERT INTO pruefungsausschuss (bezeichnung, ausbildungsberuf, pruefungstage)
-    VALUES (?, ?, ?)
+    INSERT INTO pruefungsausschuss (
+      bezeichnung,
+      ausbildungsberuf,
+      pruefungstage
+    ) VALUES (?, ?, ?)
   `;
 
-  const params = [
-      data.bezeichnung,
-      data.ausbildungsberuf,
-      data.pruefungstage
-    ];
+  const values = [
+    pruefungsausschuss.bezeichnung,
+    pruefungsausschuss.ausbildungsberuf,
+    pruefungsausschuss.pruefungstage
+  ];
 
-  db.run(sql, params, function (err) {
-    if (err) {
-      console.error('Insert error:', err.message);
-      callback(err);
-    } else {
-      console.log('Insert successful, ID:', this.lastID);
-      callback(null, { id: this.lastID });
-    }
+  return new Promise((resolve, reject) => {
+    db.run(sql, values, function (err) {
+      if (err) {
+        console.error('Insert Pruefungsausschuss error:', err.message);
+        return reject(err);
+      }
+
+      // SQLite liefert die ID des neu angelegten Datensatzes
+      resolve({ id: this.lastID });
+    });
   });
 }
 
-module.exports = { insertAnsprechpartner };
+module.exports = { insertPruefungsausschuss };

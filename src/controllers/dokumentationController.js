@@ -1,47 +1,38 @@
-// Importiert die Service-Funktion zum Einfügen eines Dokumentation
+// controller/dokumentationController.js
 const { insertDokumentation } = require('../service/dokumentationService');
 
-
 /**
- * Controller-Funktion zum Anlegen eines neue Dokumentation
- *
- * Erwartet JSON im Request-Body:
- * {
- *   "bewertungskriterium": "34",
- *   "gesamtpunkte": "21"
- * }
+ * Add a new Dokumentation
+ * POST /dokumentation
  */
-function addDokumentation(req, res) {
+async function addDokumentation(req, res) {
+  try {
+    const { bewertungskriterium, gesamtpunkte } = req.body;
 
-  // Daten aus dem Request-Body auslesen
-  const data = req.body;
-  console.log('Controller received:', data);
-
-  // Übergibt die Daten an die Service-Schicht
-  insertDokumentation(data, (err, result) => {
-
-    // Fehler beim Datenbank-Insert
-    if (err) {
-      console.error('Insert failed:', err.message);
-
-      // HTTP 500 → interner Serverfehler
-      res.status(500).json({
-        error: 'Database insert failed',
-        details: err.message
-      });
-
-    } else {
-      // Erfolgreiches Insert
-      console.log('Insert succeeded:', result);
-
-      // HTTP 201 → Ressource erfolgreich erstellt
-      res.status(201).json({
-        message: 'Dokumentation added successfully!',
-        id: result.id
+    // Basis-Validierung
+    if (!bewertungskriterium || gesamtpunkte === undefined) {
+      return res.status(400).json({
+        error: 'Missing required Dokumentation fields'
       });
     }
-  });
+
+    const result = await insertDokumentation({
+      bewertungskriterium,
+      gesamtpunkte
+    });
+
+    res.status(201).json({
+      message: 'Dokumentation successfully added',
+      id: result.id
+    });
+
+  } catch (err) {
+    console.error('Error adding Dokumentation:', err);
+    res.status(500).json({
+      error: 'Database insert failed',
+      details: err.message
+    });
+  }
 }
 
-// Exportiert den Controller für die Routen
 module.exports = { addDokumentation };

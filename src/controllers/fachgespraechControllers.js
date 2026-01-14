@@ -1,47 +1,38 @@
-// Importiert die Service-Funktion zum Einfügen eines Fachgespraech 
+// controller/fachgespraechController.js
 const { insertFachgespraech } = require('../service/fachgespraechService');
 
-
 /**
- * Controller-Funktion zum Anlegen eines neue Fachgespraech
- *
- * Erwartet JSON im Request-Body:
- * {
- *   "bewertungskriterium": "34",
- *   "gesamtpunkte": "21"
- * }
+ * Add a new Fachgespraech
+ * POST /fachgespraech
  */
-function addFachgespraech(req, res) {
+async function addFachgespraech(req, res) {
+  try {
+    const { bewertungskriterium, gesamtpunkte } = req.body;
 
-  // Daten aus dem Request-Body auslesen
-  const data = req.body;
-  console.log('Controller received:', data);
-
-  // Übergibt die Daten an die Service-Schicht
-  insertFachgespraech(data, (err, result) => {
-
-    // Fehler beim Datenbank-Insert
-    if (err) {
-      console.error('Insert failed:', err.message);
-
-      // HTTP 500 → interner Serverfehler
-      res.status(500).json({
-        error: 'Database insert failed',
-        details: err.message
-      });
-
-    } else {
-      // Erfolgreiches Insert
-      console.log('Insert succeeded:', result);
-
-      // HTTP 201 → Ressource erfolgreich erstellt
-      res.status(201).json({
-        message: 'Fachgespraech added successfully!',
-        id: result.id
+    // Basis-Validierung
+    if (!bewertungskriterium || gesamtpunkte === undefined) {
+      return res.status(400).json({
+        error: 'Missing required Fachgespraech fields'
       });
     }
-  });
+
+    const result = await insertFachgespraech({
+      bewertungskriterium,
+      gesamtpunkte
+    });
+
+    res.status(201).json({
+      message: 'Fachgespraech successfully added',
+      id: result.id
+    });
+
+  } catch (err) {
+    console.error('Error adding Fachgespraech:', err);
+    res.status(500).json({
+      error: 'Database insert failed',
+      details: err.message
+    });
+  }
 }
 
-// Exportiert den Controller für die Routen
 module.exports = { addFachgespraech };
