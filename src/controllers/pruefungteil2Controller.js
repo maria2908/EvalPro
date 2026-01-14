@@ -1,4 +1,4 @@
-const { insertPruefungteil2 } = require('../service/pruefungteil2');
+const { insertPruefungteil2 } = require('../service/pruefungteil2Service');
 
 function addPruefungteil2(req, res) {
   const data = req.body;

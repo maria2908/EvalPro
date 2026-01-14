@@ -1,10 +1,10 @@
-const { insertPruefungteil2 } = require('../service/muendliche_Zusatzpruefung');
+const { insertPruefungteil2 } = require('../service/muendliche_ZusatzpruefungService');
 
 function addMuendliche_Zusatzpruefung(req, res) {
   const data = req.body;
   console.log('Controller received:', data);
 
-  insertPruefungteil2insertMuendliche_Zusatzpruefung(data, (err, result) => {
+  insertMuendliche_Zusatzpruefung(data, (err, result) => {
     if (err) {
       console.error('Insert failed:', err.message);
       res.status(500).json({ error: 'Database insert failed', details: err.message });
