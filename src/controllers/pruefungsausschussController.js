@@ -1,6 +1,6 @@
 const { insertPruefungsausschuss } = require('../service/pruefungsausschuss');
 
-function addPruefungsausschussr(req, res) {
+function addPruefungsausschuss(req, res) {
   const data = req.body;
   console.log('Controller received:', data);
 

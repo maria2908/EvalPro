@@ -31,4 +31,35 @@ function insertSchueler(schueler, callback) {
   });
 }
 
-module.exports = { insertSchueler };
+function selectSchuelers(callback) {
+  const sql = `SELECT * FROM schueler`;
+
+  db.all(sql, [], (err, rows) => {  // db.all für SELECT
+    if (err) {
+      console.error('Select error:', err.message);
+      callback(err);
+    } else {
+      callback(null, rows); // Hier geben wir die Ergebnisse zurück
+    }
+  });
+}
+
+
+function selectSchueler(schueler, callback) {
+  const sql = `SELECT * FROM schueler WHERE name = ?`;
+  const value = [schueler.name];
+
+  db.all(sql, value, (err, rows) => {  // db.all für SELECT
+    if (err) {
+      console.error('Select error:', err.message);
+      callback(err);
+    } else {
+      callback(null, rows); // Array von Schülern
+    }
+  });
+}
+
+module.exports = { 
+  insertSchueler, 
+  selectSchuelers, 
+  selectSchueler };
