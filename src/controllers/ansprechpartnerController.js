@@ -1,48 +1,39 @@
-// Importiert die Service-Funktion zum Einfügen eines Ansprechpartners
+// controller/ansprechpartnerController.js
 const { insertAnsprechpartner } = require('../service/ansprechpartnerService');
 
-
 /**
- * Controller-Funktion zum Anlegen eines neuen Ansprechpartners
- *
- * Erwartet JSON im Request-Body:
- * {
- *   "name": "Mustermann",
- *   "vorname": "Max",
- *   "tel": "0123456789"
- * }
+ * Add a new Ansprechpartner
+ * POST /ansprechpartner
  */
-function addAnsprechpartner(req, res) {
+async function addAnsprechpartner(req, res) {
+  try {
+    const { name, vorname, tel } = req.body;
 
-  // Daten aus dem Request-Body auslesen
-  const data = req.body;
-  console.log('Controller received:', data);
-
-  // Übergibt die Daten an die Service-Schicht
-  insertAnsprechpartner(data, (err, result) => {
-
-    // Fehler beim Datenbank-Insert
-    if (err) {
-      console.error('Insert failed:', err.message);
-
-      // HTTP 500 → interner Serverfehler
-      res.status(500).json({
-        error: 'Database insert failed',
-        details: err.message
-      });
-
-    } else {
-      // Erfolgreiches Insert
-      console.log('Insert succeeded:', result);
-
-      // HTTP 201 → Ressource erfolgreich erstellt
-      res.status(201).json({
-        message: 'Ansprechpartner added successfully!',
-        id: result.id
+    // Einfache Validierung
+    if (!name || !vorname || !tel) {
+      return res.status(400).json({
+        error: 'Missing required Ansprechpartner fields'
       });
     }
-  });
+
+    const result = await insertAnsprechpartner({
+      name,
+      vorname,
+      tel
+    });
+
+    res.status(201).json({
+      message: 'Ansprechpartner successfully added',
+      id: result.id
+    });
+
+  } catch (err) {
+    console.error('Error adding Ansprechpartner:', err);
+    res.status(500).json({
+      error: 'Database insert failed',
+      details: err.message
+    });
+  }
 }
 
-// Exportiert den Controller für die Routen
 module.exports = { addAnsprechpartner };

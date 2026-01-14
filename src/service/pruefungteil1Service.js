@@ -1,24 +1,35 @@
 const db = require('../config/connection');
 
-function insertPruefungteil1(data, callback) {
+/**
+ * Insert Pruefungsteil 1 into database
+ *
+ * @param {Object} data
+ * @param {string} data.pruefungsbereich
+ * @param {number} data.punktzahl
+ * @returns {Promise<{id: number}>}
+ */
+function insertPruefungteil1(data) {
   const sql = `
-    INSERT INTO pruefungteil1 (pruefungsbereich, punktzahl)
-    VALUES (?, ?)
+    INSERT INTO pruefungteil1 (
+      pruefungsbereich,
+      punktzahl
+    ) VALUES (?, ?)
   `;
 
-  const params = [
-      data.pruefungsbereich,
-      data.punktzahl
-    ];
+  const values = [
+    data.pruefungsbereich,
+    data.punktzahl
+  ];
 
-  db.run(sql, params, function (err) {
-    if (err) {
-      console.error('Insert error:', err.message);
-      callback(err);
-    } else {
-      console.log('Insert successful, ID:', this.lastID);
-      callback(null, { id: this.lastID });
-    }
+  return new Promise((resolve, reject) => {
+    db.run(sql, values, function (err) {
+      if (err) {
+        console.error('Insert Pruefungteil1 error:', err.message);
+        return reject(err);
+      }
+
+      resolve({ id: this.lastID });
+    });
   });
 }
 

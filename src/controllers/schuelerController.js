@@ -1,63 +1,87 @@
+// controller/schuelerController.js
 const SchuelerBuilder = require('../builders/SchuelerBuilder');
 const { insertSchueler, selectSchuelers, selectSchueler } = require('../service/schuelerService');
 
-function addSchueler(req, res) {
+/**
+ * Add a new Schueler
+ * POST /schueler
+ */
+async function addSchueler(req, res) {
   try {
     const b = new SchuelerBuilder();
 
-    if (req.body.name) b.setName(req.body.name);
-    if (req.body.vorname) b.setVorname(req.body.vorname);
-    if (req.body.ausbildungsbetrieb) b.setAusbildungsbetrieb(req.body.ausbildungsbetrieb);
-    if (req.body.address) b.setAdresseId(req.body.address);
-    if (req.body.ansprechpartner) b.setAnsprechpartnerId(req.body.ansprechpartner);
-    if (req.body.pruefungsausschuss) b.setPruefungsausschussId(req.body.pruefungsausschuss);
-    if (req.body.dok_punkte) b.setDokPunkteId(req.body.dok_punkte);
-    if (req.body.fach_punkte) b.setFachPunkteId(req.body.fach_punkte);
-    if (req.body.praesentation_punkte) b.setPraesentationPunkteId(req.body.praesentation_punkte);
-    if (req.body.pruefungteil1_punkte) b.setSchriftlichTeil1Id(req.body.pruefungteil1_punkte);
-    if (req.body.pruefungteil2_punkte) b.setSchriftlichTeil2Id(req.body.pruefungteil2_punkte);
-    if (req.body.muendliche_punkte) b.setMuendlichId(req.body.muendliche_punkte);
+    // Dynamisches Mapping der Felder auf Builder-Methoden
+    const fieldMap = {
+      name: 'setName',
+      vorname: 'setVorname',
+      ausbildungsbetrieb: 'setAusbildungsbetrieb',
+      address: 'setAdresseId',
+      ansprechpartner: 'setAnsprechpartnerId',
+      pruefungsausschuss: 'setPruefungsausschussId',
+      dok_punkte: 'setDokPunkteId',
+      fach_punkte: 'setFachPunkteId',
+      praesentation_punkte: 'setPraesentationPunkteId',
+      pruefungteil1_punkte: 'setSchriftlichTeil1Id',
+      pruefungteil2_punkte: 'setSchriftlichTeil2Id',
+      muendliche_punkte: 'setMuendlichId'
+    };
 
-    const schueler = b.build();
-
-    insertSchueler(schueler, (err, result) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
+    Object.entries(fieldMap).forEach(([field, setter]) => {
+      if (req.body[field] !== undefined && typeof b[setter] === 'function') {
+        b[setter](req.body[field]);
       }
-      res.status(201).json({
-        message: 'Schüler angelegt',
-        id: result.id
-      });
     });
 
+    const schueler = b.build();
+    const result = await insertSchueler(schueler);
+
+    res.status(201).json({ message: 'Schüler angelegt', id: result.id });
+
   } catch (err) {
+    console.error('Error adding Schueler:', err);
     res.status(400).json({ error: err.message });
   }
 }
 
-function getSchuelers(req, res) {
-  console.log('Controller called');
-
-  selectSchuelers((err, result) => {  // kein data nötig
-    if (err) {
-      res.status(500).json({ error: 'Database select failed', details: err.message });
-    } else {
-      res.status(200).json(result); // Status 200 für SELECT
-    }
-  });
+/**
+ * Get all Schueler
+ * GET /schueler
+ */
+async function getSchuelers(req, res) {
+  try {
+    console.log('Fetching all Schueler');
+    const result = await selectSchuelers();
+    res.status(200).json(result);
+  } catch (err) {
+    console.error('Error fetching Schuelers:', err);
+    res.status(500).json({ error: 'Database select failed', details: err.message });
+  }
 }
 
-function getSchueler(req, res) {
-  console.log('Controller called');
-  const name = req.body.name;
-
-  selectSchueler({ name }, (err, result) => {
-    if (err) {
-      res.status(500).json({ error: 'Database select failed', details: err.message });
-    } else {
-      res.status(200).json(result); // Ergebnis als JSON
+/**
+ * Get Schueler by name
+ * GET /schueler/:name
+ */
+async function getSchueler(req, res) {
+  try {
+    const name = req.params.name;
+    if (!name) {
+      return res.status(400).json({ error: 'Name parameter is required' });
     }
-  });
+
+    console.log('Fetching Schueler with name:', name);
+    const result = await selectSchueler(name);
+
+    if (!result || result.length === 0) {
+      return res.status(404).json({ message: 'Schueler not found' });
+    }
+
+    res.status(200).json(result);
+
+  } catch (err) {
+    console.error('Error fetching Schueler:', err);
+    res.status(500).json({ error: 'Database select failed', details: err.message });
+  }
 }
 
 module.exports = { addSchueler, getSchuelers, getSchueler };

@@ -1,6 +1,10 @@
+// service/schuelerService.js
 const db = require('../db/connection');
 
-function insertSchueler(schueler, callback) {
+/**
+ * Insert new Schueler
+ */
+function insertSchueler(schueler) {
   const sql = `
     INSERT INTO schueler (
       name, vorname, ausbildungsbetrieb,
@@ -25,41 +29,53 @@ function insertSchueler(schueler, callback) {
     schueler.muendliche_punkte
   ];
 
-  db.run(sql, values, function (err) {
-    if (err) return callback(err);
-    callback(null, { id: this.lastID });
+  return new Promise((resolve, reject) => {
+    db.run(sql, values, function (err) {
+      if (err) {
+        console.error('Insert error:', err.message);
+        return reject(err);
+      }
+      resolve({ id: this.lastID });
+    });
   });
 }
 
-function selectSchuelers(callback) {
+/**
+ * Select all Schueler
+ */
+function selectSchuelers() {
   const sql = `SELECT * FROM schueler`;
 
-  db.all(sql, [], (err, rows) => {  // db.all für SELECT
-    if (err) {
-      console.error('Select error:', err.message);
-      callback(err);
-    } else {
-      callback(null, rows); // Hier geben wir die Ergebnisse zurück
-    }
+  return new Promise((resolve, reject) => {
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        console.error('Select all error:', err.message);
+        return reject(err);
+      }
+      resolve(rows);
+    });
   });
 }
 
-
-function selectSchueler(schueler, callback) {
+/**
+ * Select Schueler by name
+ */
+function selectSchueler(name) {
   const sql = `SELECT * FROM schueler WHERE name = ?`;
-  const value = [schueler.name];
 
-  db.all(sql, value, (err, rows) => {  // db.all für SELECT
-    if (err) {
-      console.error('Select error:', err.message);
-      callback(err);
-    } else {
-      callback(null, rows); // Array von Schülern
-    }
+  return new Promise((resolve, reject) => {
+    db.all(sql, [name], (err, rows) => {
+      if (err) {
+        console.error('Select by name error:', err.message);
+        return reject(err);
+      }
+      resolve(rows);
+    });
   });
 }
 
-module.exports = { 
-  insertSchueler, 
-  selectSchuelers, 
-  selectSchueler };
+module.exports = {
+  insertSchueler,
+  selectSchuelers,
+  selectSchueler
+};
