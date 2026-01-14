@@ -2,9 +2,9 @@
 const db = require('../db/connection');
 
 /**
- * Fügt einen neuen Ansprechpartner in die Datenbank ein
+ * Fügt einen neuen Adresse in die Datenbank ein
  * 
- * @param {Object} data - Enthält die Ansprechpartner-Daten
+ * @param {Object} data - Enthält die Adresse-Daten
  * @param {string} data.strasse - Strasse
  * @param {number} data.hausnummer - Hausnummer
  * @param {number} data.plz - PLZ

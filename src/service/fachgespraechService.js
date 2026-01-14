@@ -2,18 +2,18 @@
 const db = require('../db/connection');
 
 /**
- * Fügt einen neuen Dokumentation in die Datenbank ein
+ * Fügt einen neuen Fachgespraech in die Datenbank ein
  * 
- * @param {Object} data - Enthält die Dokumentation-Daten
+ * @param {Object} data - Enthält die Fachgespraech-Daten
  * @param {id} data.bewertungskriterium - Bewertungskriterium
  * @param {number} data.gesamtpunkte - Gesamtpunkte
  * @param {Function} callback - Callback-Funktion für Erfolg oder Fehler
  */
-function insertDokumentation(data, callback) {
+function insertFachgespraech(data, callback) {
 
   // SQL-Statement zum Einfügen eines Datensatzes
   const sql = `
-    INSERT INTO dokumentation (bewertungskriterium, gesamtpunkte)
+    INSERT INTO fachgespraech (bewertungskriterium, gesamtpunkte)
     VALUES (?, ?)
   `;
 
