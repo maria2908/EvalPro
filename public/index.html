@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EvalPro - Start</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 50px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .status.checking {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status.running {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .button.windows {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .button.mac {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .button.open {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            font-size: 20px;
+        }
+
+        .icon {
+            margin-right: 10px;
+            font-size: 24px;
+        }
+
+        .instructions {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .instructions ul {
+            list-style-position: inside;
+            color: #666;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .redirect-message {
+            margin-top: 20px;
+            color: #667eea;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>🚀 EvalPro</h1>
+        <p class="subtitle">Ansprechpartner Verwaltungssystem</p>
+
+        <div id="status" class="status checking">
+            <div class="loading"></div>
+            Überprüfe Server-Status...
+        </div>
+        <div id="content">
+            <!-- Content wird dynamisch geladen -->
+        </div>
+    </div>
+
+    <script>
+
+        // URL des lokalen Servers
+        const SERVER_URL = 'http://localhost:3000/';
+
+        // Intervall für Server-Checks (in Millisekunden)
+        const CHECK_INTERVAL = 2000; // alle 2 Sekunden
+
+        // Prüft, ob der Server erreichbar ist
+        async function checkServer() {
+            try {
+                // Erster Versuch: einfacher GET-Request
+                const response = await fetch(SERVER_URL);
+                return response.ok;
+            } catch (error) {
+                // Falls der erste Versuch fehlschlägt → zweiter Versuch
+                try {
+                    const response = await fetch(SERVER_URL);
+                    return response.ok;
+                } catch (e) {
+                    // Server nicht erreichbar
+                    return false;
+                }
+            }
+        }
+
+
+        // Zeigt Startbuttons + Anleitung an,
+        // wenn der Server nicht läuft
+        function showStartButtons() {
+            const statusDiv = document.getElementById('status');
+            const contentDiv = document.getElementById('content');
+
+            // Statusanzeige auf "offline" setzen
+            statusDiv.className = 'status offline';
+            statusDiv.innerHTML = '⚠️ Server ist nicht gestartet';
+
+            // HTML-Inhalt dynamisch einfügen
+            contentDiv.innerHTML = `
+                <p style="margin-bottom: 20px; color: #666;">
+                    Bitte starten Sie den Server mit der passenden Datei für Ihr Betriebssystem:
+                </p>
+                
+                <div class="buttons">
+                    <!-- Windows Startdatei -->
+                    <a href="start.bat" class="button windows" download>
+                        <span class="icon">🪟</span>
+                        <span>Windows - start.bat</span>
+                    </a>
+                    
+                    <!-- Mac / Linux Startdatei -->
+                    <a href="start.sh" class="button mac" download>
+                        <span class="icon">🍎</span>
+                        <span>Mac / Linux - start.sh</span>
+                    </a>
+                </div>
+
+                <!-- Anleitung für Benutzer -->
+                <div class="instructions">
+                    <h3>📋 Anleitung:</h3>
+                    <ul>
+                        <li><strong>Windows:</strong> Doppelklick auf start.bat</li>
+                        <li><strong>Mac/Linux:</strong> Terminal öffnen und ausführen:<br>
+                            <code>chmod +x start.sh && ./start.sh</code></li>
+                        <li>Diese Seite aktualisiert sich automatisch</li>
+                    </ul>
+                    
+                    <h3 style="margin-top: 20px;">⚙️ Voraussetzung:</h3>
+                    <ul>
+                        <li>Node.js muss installiert sein:
+                            <a href="https://nodejs.org" target="_blank">nodejs.org</a>
+                        </li>
+                    </ul>
+                </div>
+            `;
+
+            // Startet die automatische Überprüfung,
+            // ob der Server später online geht
+            startAutoCheck();
+        }
+
+
+        // Zeigt Erfolgsmeldung + Weiterleitung
+        function showRedirect() {
+            const statusDiv = document.getElementById('status');
+            const contentDiv = document.getElementById('content');
+
+            // Statusanzeige auf "running" setzen
+            statusDiv.className = 'status running';
+            statusDiv.innerHTML = '✅ Server läuft erfolgreich!';
+
+            // Weiterleitungsinhalt
+            contentDiv.innerHTML = `
+                <div class="redirect-message">
+                    Weiterleitung zur Anwendung in 3 Sekunden...
+                </div>
+                
+                <div class="buttons">
+                    <a href="app.html" class="button open">
+                        <span class="icon">🌐</span>
+                        <span>Jetzt öffnen</span>
+                    </a>
+                </div>
+            `;
+
+            // Automatische Weiterleitung nach 3 Sekunden
+            setTimeout(() => {
+                window.location.href = "app.html";
+            }, 3000);
+        }
+
+
+        /* ================================
+           AUTOMATISCHE PRÜFUNG
+        ================================= */
+
+        // Prüft regelmäßig, ob der Server gestartet wurde
+        function startAutoCheck() {
+            const intervalId = setInterval(async () => {
+                const isRunning = await checkServer();
+                if (isRunning) {
+                    clearInterval(intervalId); // Intervall stoppen
+                    showRedirect();            // Weiterleitung anzeigen
+                }
+            }, CHECK_INTERVAL);
+        }
+
+
+        /* ================================
+           INITIALISIERUNG
+        ================================= */
+
+        // Wird beim Laden der Seite ausgeführt
+        async function init() {
+            // Kurze Verzögerung für bessere UX
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Serverstatus prüfen
+            const isRunning = await checkServer();
+            
+            // Passende Ansicht anzeigen
+            if (isRunning) {
+                showRedirect();
+            } else {
+                showStartButtons();
+            }
+        }
+
+        // Startpunkt der Anwendung
+        init();
+    </script>
+</body>
+</html>

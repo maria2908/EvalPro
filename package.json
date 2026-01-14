@@ -13,7 +13,9 @@
     "nodemon": "^3.1.10"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "postinstall": "chmod +x start.sh 2>/dev/null || true"
   },
   "keywords": [],
   "author": "",
