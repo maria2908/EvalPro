@@ -1,26 +1,24 @@
 // Importiert die Service-Funktion zum Einfügen eines Ansprechpartners
-const { insertAdresse } = require('../service/adresseService');
+const { insertDokumentation } = require('../service/dokumentationService');
 
 
 /**
- * Controller-Funktion zum Anlegen eines neue Adresse
+ * Controller-Funktion zum Anlegen eines neue Dokumentation
  *
  * Erwartet JSON im Request-Body:
  * {
- *   "strasse": "Hermann-Kohl-Str.",
- *   "hausnummer": "21",
- *   "plz": "93049"
- *   "stadt": "Regensburg"
+ *   "bewertungskriterium": "34",
+ *   "gesamtpunkte": "21"
  * }
  */
-function addAdresse(req, res) {
+function addDokumentation(req, res) {
 
   // Daten aus dem Request-Body auslesen
   const data = req.body;
   console.log('Controller received:', data);
 
   // Übergibt die Daten an die Service-Schicht
-  insertAdresse(data, (err, result) => {
+  insertDokumentation(data, (err, result) => {
 
     // Fehler beim Datenbank-Insert
     if (err) {
@@ -46,4 +44,4 @@ function addAdresse(req, res) {
 }
 
 // Exportiert den Controller für die Routen
-module.exports = { addAdresse };
+module.exports = { addDokumentation };

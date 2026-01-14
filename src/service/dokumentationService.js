@@ -5,22 +5,20 @@ const db = require('../db/connection');
  * Fügt einen neuen Ansprechpartner in die Datenbank ein
  * 
  * @param {Object} data - Enthält die Ansprechpartner-Daten
- * @param {string} data.strasse - Strasse
- * @param {number} data.hausnummer - Hausnummer
- * @param {number} data.plz - PLZ
- * @param {string} data.stadt - Stadt
+ * @param {id} data.bewertungskriterium - Bewertungskriterium
+ * @param {number} data.gesamtpunkte - Gesamtpunkte
  * @param {Function} callback - Callback-Funktion für Erfolg oder Fehler
  */
-function insertAdresse(data, callback) {
+function insertDokumentation(data, callback) {
 
   // SQL-Statement zum Einfügen eines Datensatzes
   const sql = `
-    INSERT INTO adresse (stasse, hausnummer, plz, stadt)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO dokumentation (bewertungskriterium, gesamtpunkte)
+    VALUES (?, ?)
   `;
 
   // Führt das SQL-Statement mit Platzhaltern aus (Schutz vor SQL-Injection)
-  db.run(sql, [data.strasse, data.hausnummer, data.plz, data.stadt], function (err) {
+  db.run(sql, [data.bewertungskriterium, data.gesamtpunkte], function (err) {
 
     // Fehlerbehandlung
     if (err) {
@@ -35,4 +33,4 @@ function insertAdresse(data, callback) {
 }
 
 // Exportiert die Funktion für andere Module (z. B. Routes)
-module.exports = { insertAdresse };
+module.exports = { insertDokumentation };
