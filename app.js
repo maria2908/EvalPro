@@ -1,33 +1,32 @@
-const initDatabase = require('./src/db/initDatabase.js');
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const ansprechpartnerRoutes = require('./src/routes/ansprechpartnerRoutes.js');
-const path = require('path');
-
+const initDatabase = require('./src/db/initDatabase.js');
 
 async function startApp() {
-    try {
-        await initDatabase();
-        console.log('Database initialized. Running app logic...');
+    await initDatabase();
 
-        const app = express();
-        app.use(bodyParser.json());
-        app.use(cors());
-        // Routes
-        app.use('/index', ansprechpartnerRoutes);
+    const app = express();
 
-        app.get('/', (req, res) => {
-          res.sendFile(path.join(__dirname, 'index.html'));
-        });
+    app.use(bodyParser.json());
+    app.use(cors());
 
-        app.listen(3000, () => {
-          console.log('Server is running on http://localhost:3000');
-        });
-    
-      } catch (err) {
-        console.error('Database initialization failed:', err.message);
-      }
+    // Statische Dateien bereitstellen
+    app.use(express.static(path.join(__dirname, 'public')));
+
+    // API-Routen für das Formular
+    app.use('/api/ansprechpartner', ansprechpartnerRoutes);
+
+    // Root → Landing-Seite
+    app.get('/', (req, res) => {
+        res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    });
+
+    app.listen(3000, () => {
+        console.log('Server running on http://localhost:3000');
+    });
 }
 
 startApp();
