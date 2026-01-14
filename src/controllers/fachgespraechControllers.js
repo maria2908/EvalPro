@@ -1,9 +1,9 @@
-// Importiert die Service-Funktion zum Einfügen eines Dokumentation
-const { insertDokumentation } = require('../service/dokumentationService');
+// Importiert die Service-Funktion zum Einfügen eines Fachgespraech 
+const { insertFachgespraech } = require('../service/fachgespraechService');
 
 
 /**
- * Controller-Funktion zum Anlegen eines neue Dokumentation
+ * Controller-Funktion zum Anlegen eines neue Fachgespraech
  *
  * Erwartet JSON im Request-Body:
  * {
@@ -11,14 +11,14 @@ const { insertDokumentation } = require('../service/dokumentationService');
  *   "gesamtpunkte": "21"
  * }
  */
-function addDokumentation(req, res) {
+function addFachgespraech(req, res) {
 
   // Daten aus dem Request-Body auslesen
   const data = req.body;
   console.log('Controller received:', data);
 
   // Übergibt die Daten an die Service-Schicht
-  insertDokumentation(data, (err, result) => {
+  insertFachgespraech(data, (err, result) => {
 
     // Fehler beim Datenbank-Insert
     if (err) {
@@ -36,7 +36,7 @@ function addDokumentation(req, res) {
 
       // HTTP 201 → Ressource erfolgreich erstellt
       res.status(201).json({
-        message: 'Dokumentation added successfully!',
+        message: 'Fachgespraech added successfully!',
         id: result.id
       });
     }
@@ -44,4 +44,4 @@ function addDokumentation(req, res) {
 }
 
 // Exportiert den Controller für die Routen
-module.exports = { addDokumentation };
+module.exports = { addFachgespraech };

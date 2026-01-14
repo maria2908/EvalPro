@@ -1,4 +1,4 @@
-// Importiert die Service-Funktion zum Einfügen eines Ansprechpartners
+// Importiert die Service-Funktion zum Einfügen eines Adresse
 const { insertAdresse } = require('../service/adresseService');
 
 
