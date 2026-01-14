@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EvalPro - Start</title>
-     <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    <link rel="stylesheet" href="global css/style.css">
 </head>
 <body>
-        <nav class="sidebar">
+ <div class="layout">
+    <nav class="sidebar">
    <div class="sidebar-header">
   <div class="logo-wrapper">
-    <img src="assets/logo.svg" alt="Stadt Regensburg Logo" />
+    <img src="/assets/logo.svg" alt="Stadt Regensburg Logo" />
   </div>
 </div>
-    <nav>
+
       <ul class="menu">
         <li>
           <a href="/pruefungsausschuss">Prüfungsausschuss verwalten</a>
@@ -35,27 +36,21 @@
       </ul>
     </nav>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('ansprechpartnerForm');
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(form));
-
-        try {
-            const res = await fetch('/api/ansprechpartner', {
+    <script>
+        const form = document.getElementById('ansprechpartnerForm');
+        form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const data = Object.fromEntries(new FormData(form));
+                const res = await fetch('http://localhost:3000/index', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
             });
             const result = await res.json();
+            console.log(result);
             alert(JSON.stringify(result));
-        } catch (err) {
-            alert('Fehler beim Senden: ' + err.message);
-        }
-    });
-});
+        });
+    </script>
 
-</script>
 </body>
 </html>
