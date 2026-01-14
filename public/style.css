@@ -1,0 +1,137 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* LAYOUT */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  background: #e30613;
+  color: white;
+  padding: 20px 0;
+}
+/* LOGO AREA */
+.sidebar-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.logo-wrapper {
+  background: white;
+    border-radius: 0 0 120px 120px;
+    padding: 58px;
+    margin-top: -21px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-wrapper img {
+  width: 100px;
+  height: auto;
+}
+
+
+/* MENU */
+.menu {
+  list-style: none;
+  margin-top: 30px;
+}
+
+.menu > li {
+  margin-bottom: 6px;
+}
+
+.menu a,
+.menu span {
+  display: block;
+  padding: 14px 20px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 8px 0 0 8px;
+}
+
+.menu a:hover,
+.menu span:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* SUBMENU */
+.has-submenu > span::after {
+  content: "⌄";
+  float: right;
+}
+
+.submenu {
+  list-style: none;
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.submenu li a {
+  font-size: 14px;
+  padding: 10px 20px;
+  background: white;
+  color: #c90511;
+  border-radius:  0;
+}
+
+.submenu li a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* CONTENT AREA */
+.content {
+  flex: 1;
+  padding: 40px;
+  background: #f8f8f8;
+}
+
+/* FORM (just light polish) */
+form input {
+  display: block;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 250px;
+}
+
+form button {
+  padding: 10px 20px;
+  background: #e30613;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+form button:hover {
+  background: #c90511;
+}
+.list-item {
+  position: relative;
+  padding: 12px 16px;
+}
+
+.list-item .actions {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+}
+
+.list-item:hover .actions {
+  display: block;
+}
