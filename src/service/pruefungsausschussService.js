@@ -1,5 +1,5 @@
 // service/pruefungsausschussService.js
-const db = require('../config/connection');
+const db = require('../db/connection');
 
 /**
  * Insert a new Pruefungsausschuss into database
@@ -38,4 +38,68 @@ function insertPruefungsausschuss(pruefungsausschuss) {
   });
 }
 
-module.exports = { insertPruefungsausschuss };
+
+/**
+ * Get all Pruefungsausschuss records from database
+ * @returns {Promise<Array>}
+ */
+
+function selectAllPruefungsausschuss() {
+  const sql = `SELECT * FROM pruefungsausschuss`;
+
+  return new Promise((resolve, reject) => {
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        console.error('Fetch Pruefungsausschuss error:', err.message);
+        return reject(err);
+      }
+      resolve(rows); // rows ist ein Array mit allen Datensätzen
+    });
+  });
+}
+
+/**
+ * Get one Pruefungsausschuss by ID
+ * @param {number} id
+ * @returns {Promise<Object|null>}
+ */
+function selectPruefungsausschussById(id) {
+  const sql = `SELECT * FROM pruefungsausschuss WHERE ID = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.get(sql, [id], (err, row) => {
+      if (err) {
+        console.error('Fetch Pruefungsausschuss by ID error:', err.message);
+        return reject(err);
+      }
+      resolve(row || null); // null if not found
+    });
+  });
+}
+
+/**
+ * Get one Pruefungsausschuss by bezeichnung
+ * @param {string} bezeichnung
+ * @returns {Promise<Object|null>}
+ */
+function selectPruefungsausschussByBezeichnung(bezeichnung) {
+  const sql = `SELECT * FROM pruefungsausschuss WHERE bezeichnung = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.get(sql, [bezeichnung], (err, row) => {
+      if (err) {
+        console.error('Fetch Pruefungsausschuss by bezeichnung error:', err.message);
+        return reject(err);
+      }
+      resolve(row || null);
+    });
+  });
+}
+
+
+module.exports = { 
+  insertPruefungsausschuss,
+  selectAllPruefungsausschuss,
+  selectPruefungsausschussById,
+  selectPruefungsausschussByBezeichnung
+};
