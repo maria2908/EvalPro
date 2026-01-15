@@ -22,13 +22,13 @@ const {
  * POST http://localhost:3000/index
  */
 // POST /api/pruefungsausschuss
-router.post('/', addPruefungsausschuss);
+router.post('/add', addPruefungsausschuss);
 
 // GET alle
-router.get('/', listPruefungsausschuss);
+router.get('/list', listPruefungsausschuss);
 
 // GET per ID
-router.get('/:id', getPruefungsausschussById);
+router.get('/id/:id', getPruefungsausschussById);
 
 // GET per Bezeichnung
 router.get('/by-name/:bezeichnung', getPruefungsausschussByBezeichnung);
