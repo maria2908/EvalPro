@@ -1,32 +1,59 @@
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
 const cors = require('cors');
-const ansprechpartnerRoutes = require('./src/routes/ansprechpartnerRoutes.js');
-const initDatabase = require('./src/db/initDatabase.js');
+
+const ansprechpartnerRoutes = require('./src/routes/ansprechpartnerRoutes');
+const schuellerRoutes = require('./src/routes/schuellerRoutes');
+
+const initDatabase = require('./src/db/initDatabase');
 
 async function startApp() {
+  try {
+    // Initialize database
     await initDatabase();
+    console.log('✅ Database initialized');
 
     const app = express();
 
-    app.use(bodyParser.json());
+    // Middlewares
+    app.use(express.json()); // replaces body-parser
     app.use(cors());
 
-    // Statische Dateien bereitstellen
+    // Static files
     app.use(express.static(path.join(__dirname, 'public')));
 
-    // API-Routen für das Formular
+    // API Routes
     app.use('/api/ansprechpartner', ansprechpartnerRoutes);
+    app.use('/api/schueller', schuellerRoutes);
 
-    // Root → Landing-Seite
+    // Health check (VERY useful for testing)
+    app.get('/health', (req, res) => {
+      res.status(200).json({ status: 'ok' });
+    });
+
+    // Root → Landing page
     app.get('/', (req, res) => {
-        res.sendFile(path.join(__dirname, 'public', 'index.html'));
+      res.sendFile(path.join(__dirname, 'public', 'index.html'));
     });
 
-    app.listen(3000, () => {
-        console.log('Server running on http://localhost:3000');
+    // 404 handler (helps debugging)
+    app.use((req, res) => {
+      res.status(404).json({
+        error: 'Route not found',
+        path: req.originalUrl
+      });
     });
+
+    const PORT = 3000;
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on http://localhost:${PORT}`);
+      console.log('📌 API base path: /api');
+    });
+
+  } catch (err) {
+    console.error('❌ Failed to start application:', err);
+    process.exit(1);
+  }
 }
 
 startApp();

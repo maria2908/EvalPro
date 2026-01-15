@@ -74,8 +74,28 @@ function selectSchueler(name) {
   });
 }
 
+/**
+ * Select Adresse for Schueler
+ */
+function selectSchuelerAdresse(schueler_id) {
+  const sql = `SELECT a.strasse, a.hausnummer, a.plz, a.stadt 
+               FROM schueler s, adresse a 
+               WHERE s.address = a.id and s.id = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.all(sql, [schueler_id], (err, rows) => {
+      if (err) {
+        console.error('Select all error:', err.message);
+        return reject(err);
+      }
+      resolve(rows);
+    });
+  });
+}
+
 module.exports = {
   insertSchueler,
   selectSchuelers,
-  selectSchueler
+  selectSchueler,
+  selectSchuelerAdresse
 };
