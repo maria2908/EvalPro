@@ -1,10 +1,11 @@
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
 const cors = require('cors');
-const ansprechpartnerRoutes = require('./src/routes/ansprechpartnerRoutes.js');
-const pruefungsausschussRoutes = require('./src/routes/pruefungsausschussRoutes');
-const initDatabase = require('./src/db/initDatabase.js');
+
+const ansprechpartnerRoutes = require('./src/routes/ansprechpartnerRoutes');
+const schuellerRoutes = require('./src/routes/schuellerRoutes');
+
+const initDatabase = require('./src/db/initDatabase');
 
 async function startApp() {
     await initDatabase();
