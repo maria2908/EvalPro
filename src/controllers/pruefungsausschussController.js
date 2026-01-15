@@ -1,5 +1,10 @@
 // controller/pruefungsausschussController.js
-const { insertPruefungsausschuss, getAllPruefungsausschuss } = require('../service/pruefungsausschussService');
+const { 
+  insertPruefungsausschuss,
+  selectAllPruefungsausschuss,
+  selectPruefungsausschussById,
+  selectPruefungsausschussByBezeichnung
+} = require('../service/pruefungsausschussService');
 
 /**
  * Add a new Pruefungsausschuss
@@ -39,6 +44,7 @@ async function addPruefungsausschuss(req, res) {
 async function listPruefungsausschuss(req, res) {
   try {
     const result = await selectAllPruefungsausschuss();
+    console.log('listPruefungsausschuss result:', result); // 🔹 loggen
     res.status(200).json(result);
   } catch (err) {
     console.error('Error fetching Pruefungsausschuss:', err);
@@ -92,32 +98,5 @@ async function getPruefungsausschussByBezeichnung(req, res) {
     });
   }
 }
-
-
-const req = {
-  params: {},
-  query: {},
-  body: {},
-  headers: {},
-  method: 'GET',
-  url: '/pruefungsausschuss'
-};
-
-const res = {
-  statusCode: null,
-
-  status(code) {
-    this.statusCode = code;
-    return this; // wichtig für chaining
-  },
-
-  json(data) {
-    console.log('STATUS:', this.statusCode);
-    console.log('RESPONSE:', data);
-  }
-};
-
-
-console.log(listPruefungsausschuss(req, res));
 
 module.exports = { addPruefungsausschuss, listPruefungsausschuss, getPruefungsausschussById, getPruefungsausschussByBezeichnung };

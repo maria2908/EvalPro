@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const ansprechpartnerRoutes = require('./src/routes/ansprechpartnerRoutes.js');
+const pruefungsausschussRoutes = require('./src/routes/pruefungsausschussRoutes');
 const initDatabase = require('./src/db/initDatabase.js');
 
 async function startApp() {
@@ -18,6 +19,8 @@ async function startApp() {
 
     // API-Routen für das Formular
     app.use('/api/ansprechpartner', ansprechpartnerRoutes);
+    app.use('/api/pruefungsausschuss', pruefungsausschussRoutes);
+
 
     // Root → Landing-Seite
     app.get('/', (req, res) => {
