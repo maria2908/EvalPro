@@ -7,9 +7,9 @@ const router = express.Router();
 // Controller-Funktion zum Hinzufügen eines Ansprechpartners
 const {
   addPruefungsausschuss,
-  listPruefungsausschuss,
+  getListPruefungsausschusse,
   getPruefungsausschussById,
-  getPruefungsausschussByBezeichnung
+  getPruefungsausschussByName
 } = require('../controllers/pruefungsausschussController');
 
 /**
@@ -25,13 +25,13 @@ const {
 router.post('/add', addPruefungsausschuss);
 
 // GET alle
-router.get('/list', listPruefungsausschuss);
+router.get('/list', getListPruefungsausschusse);
 
 // GET per ID
 router.get('/id/:id', getPruefungsausschussById);
 
 // GET per Bezeichnung
-router.get('/by-name/:bezeichnung', getPruefungsausschussByBezeichnung);
+router.get('/by-name/:bezeichnung', getPruefungsausschussByName);
 
 // Router für die Verwendung in der App exportieren
 module.exports = router;

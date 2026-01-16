@@ -41,7 +41,7 @@ async function addPruefungsausschuss(req, res) {
   }
 }
 
-async function listPruefungsausschuss(req, res) {
+async function getListPruefungsausschusse(req, res) {
   try {
     const result = await selectAllPruefungsausschuss();
     console.log('listPruefungsausschuss result:', result); // 🔹 loggen
@@ -77,7 +77,7 @@ async function getPruefungsausschussById(req, res) {
   }
 }
 
-async function getPruefungsausschussByBezeichnung(req, res) {
+async function getPruefungsausschussByName(req, res) {
   try {
     const { bezeichnung } = req.params;
 
@@ -99,4 +99,4 @@ async function getPruefungsausschussByBezeichnung(req, res) {
   }
 }
 
-module.exports = { addPruefungsausschuss, listPruefungsausschuss, getPruefungsausschussById, getPruefungsausschussByBezeichnung };
+module.exports = { addPruefungsausschuss, getListPruefungsausschusse, getPruefungsausschussById, getPruefungsausschussByName };
