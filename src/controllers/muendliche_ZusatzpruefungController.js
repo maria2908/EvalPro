@@ -1,18 +1,40 @@
-const { insertPruefungteil2 } = require('../service/muendliche_Zusatzpruefung');
+// controller/muendlicheZusatzpruefungController.js
+const {
+  insertMuendliche_Zusatzpruefung
+} = require('../service/muendliche_ZusatzpruefungService');
 
-function addMuendliche_Zusatzpruefung(req, res) {
-  const data = req.body;
-  console.log('Controller received:', data);
+/**
+ * Add a new mündliche Zusatzprüfung
+ * POST /muendliche-zusatzpruefung
+ */
+async function addMuendliche_Zusatzpruefung(req, res) {
+  try {
+    const { pruefungsbereich, punktzahl } = req.body;
 
-  insertPruefungteil2insertMuendliche_Zusatzpruefung(data, (err, result) => {
-    if (err) {
-      console.error('Insert failed:', err.message);
-      res.status(500).json({ error: 'Database insert failed', details: err.message });
-    } else {
-      console.log('Insert succeeded:', result);
-      res.status(201).json({ message: 'Muendliche Zusatzpruefung added successfully!', id: result.id });
+    // Basis-Validierung
+    if (!pruefungsbereich || punktzahl === undefined) {
+      return res.status(400).json({
+        error: 'Missing required Zusatzprüfung fields'
+      });
     }
-  });
+
+    const result = await insertMuendliche_Zusatzpruefung({
+      pruefungsbereich,
+      punktzahl
+    });
+
+    res.status(201).json({
+      message: 'Mündliche Zusatzprüfung successfully added',
+      id: result.id
+    });
+
+  } catch (err) {
+    console.error('Error adding mündliche Zusatzprüfung:', err);
+    res.status(500).json({
+      error: 'Database insert failed',
+      details: err.message
+    });
+  }
 }
 
 module.exports = { addMuendliche_Zusatzpruefung };
