@@ -1,18 +1,45 @@
+// controller/bewertungskriteriumController.js
 const { insertBewertungskriterium } = require('../service/bewertungskriteriumService');
 
-function addBewertungskriterium(req, res) {
-  const data = req.body;
-  console.log('Controller received:', data);
+/**
+ * Add a new Bewertungskriterium
+ * POST /bewertungskriterium
+ */
+async function addBewertungskriterium(req, res) {
+  try {
+    const {
+      bewertungsteil,
+      bewertungskriterium,
+      punkte,
+      kommentare
+    } = req.body;
 
-  insertBewertungskriterium(data, (err, result) => {
-    if (err) {
-      console.error('Insert failed:', err.message);
-      res.status(500).json({ error: 'Database insert failed', details: err.message });
-    } else {
-      console.log('Insert succeeded:', result);
-      res.status(201).json({ message: 'Bewertungskriterium added successfully!', id: result.id });
+    // Basis-Validierung
+    if (!bewertungsteil || !bewertungskriterium || punkte === undefined) {
+      return res.status(400).json({
+        error: 'Missing required Bewertungskriterium fields'
+      });
     }
-  });
+
+    const result = await insertBewertungskriterium({
+      bewertungsteil,
+      bewertungskriterium,
+      punkte,
+      kommentare
+    });
+
+    res.status(201).json({
+      message: 'Bewertungskriterium successfully added',
+      id: result.id
+    });
+
+  } catch (err) {
+    console.error('Error adding Bewertungskriterium:', err);
+    res.status(500).json({
+      error: 'Database insert failed',
+      details: err.message
+    });
+  }
 }
 
 module.exports = { addBewertungskriterium };

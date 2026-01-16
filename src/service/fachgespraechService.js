@@ -1,36 +1,36 @@
-// Importiert die bestehende Datenbankverbindung (z. B. SQLite)
+// service/fachgespraechService.js
 const db = require('../db/connection');
 
 /**
- * Fügt einen neuen Fachgespraech in die Datenbank ein
- * 
- * @param {Object} data - Enthält die Fachgespraech-Daten
- * @param {id} data.bewertungskriterium - Bewertungskriterium
- * @param {number} data.gesamtpunkte - Gesamtpunkte
- * @param {Function} callback - Callback-Funktion für Erfolg oder Fehler
+ * Insert a new Fachgespraech into database
+ *
+ * @param {Object} fachgespraech
+ * @param {number|string} fachgespraech.bewertungskriterium
+ * @param {number} fachgespraech.gesamtpunkte
+ * @returns {Promise<{id: number}>}
  */
-function insertFachgespraech(data, callback) {
-
-  // SQL-Statement zum Einfügen eines Datensatzes
+function insertFachgespraech(fachgespraech) {
   const sql = `
     INSERT INTO fachgespraech (bewertungskriterium, gesamtpunkte)
     VALUES (?, ?)
   `;
 
-  // Führt das SQL-Statement mit Platzhaltern aus (Schutz vor SQL-Injection)
-  db.run(sql, [data.bewertungskriterium, data.gesamtpunkte], function (err) {
+  const values = [
+    fachgespraech.bewertungskriterium,
+    fachgespraech.gesamtpunkte
+  ];
 
-    // Fehlerbehandlung
-    if (err) {
-      console.error('Insert error:', err.message);
-      callback(err);
-    } else {
-      // Erfolgreiches Insert → letzte eingefügte ID zurückgeben
-      console.log('Insert successful, ID:', this.lastID);
-      callback(null, { id: this.lastID });
-    }
+  return new Promise((resolve, reject) => {
+    db.run(sql, values, function (err) {
+      if (err) {
+        console.error('Insert Fachgespraech error:', err.message);
+        return reject(err);
+      }
+
+      // SQLite liefert die ID des neu angelegten Datensatzes
+      resolve({ id: this.lastID });
+    });
   });
 }
 
-// Exportiert die Funktion für andere Module (z. B. Routes)
-module.exports = { insertDokumentation };
+module.exports = { insertFachgespraech };
