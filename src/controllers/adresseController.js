@@ -1,5 +1,8 @@
 // controller/adresseController.js
-const { insertAdresse } = require('../service/adresseService');
+const { 
+  insertAdresse,
+  selectAdresseById
+} = require('../service/adresseService');
 
 /**
  * Add a new Adresse
@@ -37,4 +40,29 @@ async function addAdresse(req, res) {
   }
 }
 
-module.exports = { addAdresse };
+async function getAdresseById(req, res) {
+  try {
+    const { id } = req.params;
+
+    const result = await selectAdresseById(id);
+
+    if (!result) {
+      return res.status(404).json({
+        error: 'Adress not found'
+      });
+    }
+
+    res.status(200).json(result);
+  } catch (err) {
+    console.error('Error fetching Adress by ID:', err);
+    res.status(500).json({
+      error: 'Database fetch failed',
+      details: err.message
+    });
+  }
+}
+
+module.exports = { 
+  addAdresse,
+  getAdresseById
+};
