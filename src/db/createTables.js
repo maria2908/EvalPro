@@ -82,20 +82,6 @@ function createTables(db) {
                 ausbildungsberuf TEXT,
                 pruefungstage TEXT
             );
-
-            -- Prüfung Teil 1
-            CREATE TABLE pruefungteil1 (
-                ID INTEGER PRIMARY KEY,
-                pruefungsbereich TEXT,
-                punktzahl INTEGER
-            );
-
-            -- Prüfung Teil 2
-            CREATE TABLE pruefungteil2 (
-                ID INTEGER PRIMARY KEY,
-                bezeichnung TEXT NOT NULL,
-                punkte INTEGER
-            );
             
             -- Schüler-Tabelle (Zentrale Tabelle)
             CREATE TABLE schueler (
@@ -105,26 +91,25 @@ function createTables(db) {
                 ausbildungsbetrieb TEXT,
             
                 address INTEGER,
-                ansprechpartner INTEGER,
-                pruefungsausschuss INTEGER,
-                dok_punkte INTEGER,
-                fach_punkte INTEGER,
-                praesentation_punkte INTEGER,
-                pruefungteil1_punkte INTEGER,
-                pruefungteil2_punkte INTEGER,
-                muendliche_punkte INTEGER,
+                ansprechpartner_id INTEGER,
+                pruefungsausschuss_id INTEGER,
+                AP1_punkte INTEGER,
+                AP2GA1_punkte INTEGER,
+                AP2GA2_punkte INTEGER,
+                AP2GA3_punkte INTEGER,
+                muendliche_id INTEGER,
+                dok_id INTEGER,
+                fach_id INTEGER,
+                praesentation_id INTEGER,
             
                 -- Fremdschlüssel-Beziehungen
                 FOREIGN KEY (address) REFERENCES adresse(ID),
-                FOREIGN KEY (ansprechpartner) REFERENCES ansprechpartner(ID),
-                FOREIGN KEY (pruefungsausschuss) REFERENCES pruefungsausschuss(ID),
-                FOREIGN KEY (dok_punkte) REFERENCES dokumentation(ID),
-                FOREIGN KEY (fach_punkte) REFERENCES fachgespraech(ID),
-                FOREIGN KEY (praesentation_punkte) REFERENCES praesentation(ID),
-                FOREIGN KEY (pruefungteil1_punkte) REFERENCES pruefungteil1(ID),
-                FOREIGN KEY (pruefungteil2_punkte) REFERENCES pruefungteil2(ID),
-                FOREIGN KEY (muendliche_punkte)
-                    REFERENCES muendliche_Zusatzpruefung(ID)
+                FOREIGN KEY (ansprechpartner_id) REFERENCES ansprechpartner(ID),
+                FOREIGN KEY (pruefungsausschuss_id) REFERENCES pruefungsausschuss(ID),
+                FOREIGN KEY (dok_id) REFERENCES dokumentation(ID),
+                FOREIGN KEY (fach_id) REFERENCES fachgespraech(ID),
+                FOREIGN KEY (praesentation_id) REFERENCES praesentation(ID),
+                FOREIGN KEY (muendliche_id)REFERENCES muendliche_Zusatzpruefung(ID)
             );
             
             -- Transaktion erfolgreich abschließen
