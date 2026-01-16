@@ -60,7 +60,7 @@ function selectSchuelers() {
 /**
  * Select Schueler by name
  */
-function selectSchueler(name) {
+function selectSchuelerByName(name) {
   const sql = `SELECT * FROM schueler WHERE name = ?`;
 
   return new Promise((resolve, reject) => {
@@ -93,9 +93,27 @@ function selectSchuelerAdresse(schueler_id) {
   });
 }
 
+/**
+ * Select Schueler by id
+ */
+function selectSchuelerById(id) {
+  const sql = `SELECT * FROM schueler WHERE ID = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.get(sql, [id], (err, row) => {
+      if (err) {
+        console.error('Fetch Schueler by ID error:', err.message);
+        return reject(err);
+      }
+      resolve(row || null); // null if not found
+    });
+  });
+}
+
 module.exports = {
   insertSchueler,
   selectSchuelers,
-  selectSchueler,
-  selectSchuelerAdresse
+  selectSchuelerByName,
+  selectSchuelerAdresse,
+  selectSchuelerById
 };

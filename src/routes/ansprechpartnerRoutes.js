@@ -17,7 +17,7 @@ const { addAnsprechpartner } = require('../controllers/ansprechpartnerController
  * Beispiel:
  * POST http://localhost:3000/index
  */
-router.post('/', addAnsprechpartner);
+router.post('/add', addAnsprechpartner);
 
 // Router für die Verwendung in der App exportieren
 module.exports = router;
