@@ -1,0 +1,100 @@
+/* KARTE ÜBERSICHT */
+
+.card {
+  width: 360px;
+  border: 2px solid #e53935;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.listItem {
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.listItem.active,
+.listItem:hover,
+.listItem:focus {
+  background: #cfcfcf;
+  border-radius: 4px;
+}
+
+.btnAdd {
+  position: relative;
+  bottom: 4px;
+  padding: 4px 6px 2px; 
+}
+
+.btnAdd:hover img,
+.btnAdd:focus-visible img{
+  filter: brightness(0) saturate(100%) invert(99%) sepia(0%) saturate(0%) hue-rotate(326deg) brightness(115%) contrast(101%);;
+}
+
+.btnAdd img{
+  height: 20px;
+  width: auto;
+}
+
+.menu-btn {
+  background: none;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+/* INPUT & SELECT */
+
+.inputWrapper, 
+.selectWrapper {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.aussschussWrapper form { width: 500px; }
+.schuelerWrapper form { width: 700px; }
+
+.btnWrapper {
+  width: 100%;
+  text-align: end;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+
+.row .inputWrapper { flex: 1; }

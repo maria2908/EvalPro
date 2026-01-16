@@ -1,9 +1,32 @@
+:root {
+    --evalpro-color-red: #E30613;
+    --evalpro-color-grey: #c1c1c1;
+    --evalpro-color-grey-dark: #5f6061;
+
+    --evalpro-border-radius-m: 15px;
+    --evalpro-border-radius-s: 6px;
+}
+
 /* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* HEADLINE */
+h1 {
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--evalpro-color-red);
+    margin-bottom: 30px;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 22px;
+  margin-bottom: 15px;
 }
 
 /* LAYOUT */
@@ -99,26 +122,6 @@
   background: #f8f8f8;
 }
 
-/* FORM (just light polish) */
-form input {
-  display: block;
-  margin-bottom: 10px;
-  padding: 10px;
-  width: 250px;
-}
-
-form button {
-  padding: 10px 20px;
-  background: #e30613;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-form button:hover {
-  background: #c90511;
-}
 .list-item {
   position: relative;
   padding: 12px 16px;
@@ -135,25 +138,9 @@ form button:hover {
 .list-item:hover .actions {
   display: block;
 }
-:root {
-    --evalpro-color-red: #E30613;
-    --evalpro-color-grey: #e5e5e5;
-    --evalpro-color-grey-dark: #5f6061;
-
-    --evalpro-border-radius-m: 15px;
-    --evalpro-border-radius-s: 6px;
-}
-
-* { font-family: Arial, Helvetica, sans-serif; }
-
-h1 {
-    font-weight: 600;
-    font-size: 28px;
-    color: var(--evalpro-color-red);
-}
 
 /* BUTTON */
-.button {
+.btnDefault {
     background-color: var(--evalpro-color-red);
     border: 2px solid var(--evalpro-color-red);
     border-radius: var(--evalpro-border-radius-s);
@@ -161,21 +148,36 @@ h1 {
     padding: 8px 12px;
 }
 
-.button:hover,
-.button:focus,
-.button:focus-visible {
+.btnDefault:hover,
+.btnDefault:focus,
+.btnDefault:focus-visible {
     background-color: transparent;
     color: var(--evalpro-color-red);
     outline: none;
 }
 
-/* INPUT */
+.btnPrimary {
+    background-color: #fff;
+    border: 2px solid var(--evalpro-color-red);
+    border-radius: var(--evalpro-border-radius-s);
+    color: var(--evalpro-color-red);
+    padding: 8px 12px;
+}
+
+.btnPrimary:hover,
+.btnPrimary:focus,
+.btnPrimary:focus-visible {
+    background-color: var(--evalpro-color-red);
+    color: #fff;
+    outline: none;
+}
+
+/* INPUT & LABEL */
 .input {
     border: 2px solid var(--evalpro-color-grey);
     border-radius: var(--evalpro-border-radius-s);
     color: #000;
     padding: 8px 12px;
-
 }
 
 .input:focus,
@@ -183,3 +185,20 @@ h1 {
     border-color: var(--evalpro-color-grey-dark);
     outline: none;
 }
+
+.label {margin-bottom: 15px;}
+
+/* SELECT */
+
+.selectWrapper select {
+    border: 2px solid var(--evalpro-color-grey);
+    border-radius: var(--evalpro-border-radius-s);
+    color: #000;
+    padding: 8px 12px;
+    background-color: #fff;
+}
+.selectWrapper select option { width: 100%; }
+
+/* CONATINER */
+
+.container { padding: 50px; }
