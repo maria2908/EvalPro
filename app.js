@@ -27,7 +27,7 @@ async function startApp() {
     // API Routes
     app.use('/api/ansprechpartner', ansprechpartnerRoutes);
     app.use('/api/pruefungsausschuss', pruefungsausschussRoutes);
-    app.use('/api/schueller', schuellerRoutes);
+    app.use('/api/schueler', schuellerRoutes);
 
     // Health check (VERY useful for testing)
     app.get('/health', (req, res) => {
