@@ -1,6 +1,6 @@
 // controller/schuelerController.js
 const SchuelerBuilder = require('../builders/SchuelerBuilder');
-const { insertSchueler, selectSchuelers, selectSchueler } = require('../service/schuelerService');
+const { insertSchueler, selectSchuelers, selectSchueler, selectSchuelerAdresse } = require('../service/schuelerService');
 
 /**
  * Add a new Schueler
@@ -84,4 +84,33 @@ async function getSchueler(req, res) {
   }
 }
 
-module.exports = { addSchueler, getSchuelers, getSchueler };
+/**
+ * Get adress for Schueler
+ * GET /schueler/:id/adresse
+ */
+async function getSchuelerAdresse(req, res) {
+  try {
+    const schuelerId = req.params.id;
+
+    if (!schuelerId) {
+      return res.status(400).json({ error: 'Schueler ID is required' });
+    }
+
+    const result = await selectSchuelerAdresse(schuelerId);
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: 'Adresse not found for this Schueler' });
+    }
+
+    res.status(200).json(result[0]); // one address
+  } catch (err) {
+    console.error('Error fetching Adresse:', err);
+    res.status(500).json({
+      error: 'Database select failed',
+      details: err.message
+    });
+  }
+}
+
+
+module.exports = { addSchueler, getSchuelers, getSchueler, getSchuelerAdresse };
