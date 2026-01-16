@@ -4,6 +4,8 @@ const cors = require('cors');
 
 const ansprechpartnerRoutes = require('./src/routes/ansprechpartnerRoutes');
 const schuellerRoutes = require('./src/routes/schuellerRoutes');
+const pruefungsausschussRoutes = require('./src/routes/pruefungsausschussRoutes');
+
 
 const initDatabase = require('./src/db/initDatabase');
 
