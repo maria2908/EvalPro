@@ -1,39 +1,88 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EvalPro - Start</title>
-</head>
-<body>
-<form id="ansprechpartnerForm">
-    <input type="text" name="name" placeholder="Name" required />
-    <input type="text" name="vorname" placeholder="Vorname" required />
-    <input type="text" name="tel" placeholder="Handynummer" />
-    <button type="submit">Submit</button>
-</form>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../style.css">
+        <link rel="stylesheet" href="styles.css">
+        <title>Schüler anlegen | EvalPro</title>
+    </head>
+    <body>
+        <div class="container schuelerWrapper">
+            <h1>Schüler anlegen</h1>
+            <form id="schuelerForm">
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('ansprechpartnerForm');
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(form));
+                <div class="selectWrapper" style="margin-bottom: 25px;">
+                    <label for="ausschuss" class="label">Prüfungsauschuss auswählen:</label>
+                    <select id="ausschuss">
+                        <option value="" disabled selected hidden>
+                            Bitte wählen
+                        </option>
+                        <option>Option 1</option>
+                        <option>Option 2</option>
+                        <option>Option 3</option>
+                    </select>
+                </div>
 
-        try {
-            const res = await fetch('/api/ansprechpartner', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-            const result = await res.json();
-            alert(JSON.stringify(result));
-        } catch (err) {
-            alert('Fehler beim Senden: ' + err.message);
-        }
-    });
-});
+                <h2>Schüler</h2>
+                <div class="row">
+                    <div class="inputWrapper">
+                        <label for="vorname" class="label">Vorname:</label>
+                        <input type="text" class="input" name="vorname" />
+                    </div>
+                    <div class="inputWrapper">
+                        <label for="nachname" class="label">Nachname:</label>
+                        <input type="text" class="input" name="nachname" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="inputWrapper">
+                        <label for="strasse" class="label">Straße:</label>
+                        <input type="text" class="input" name="strasse" />
+                    </div>
+                    <div class="inputWrapper">
+                        <label for="hausnummer" class="label">Hausnummer:</label>
+                        <input type="text" class="input" name="hausnummer" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="inputWrapper">
+                        <label for="plz" class="label">Postleizahl:</label>
+                        <input type="text" class="input" name="plz" />
+                    </div>
+                    <div class="inputWrapper">
+                        <label for="ort" class="label">Ort:</label>
+                        <input type="text" class="input" name="ort" />
+                    </div>
+                </div>
 
-</script>
-</body>
+                <h2 style="margin-top: 25px;">Ausbildungsbetrieb</h2>
+                <div class="row">
+                    <div class="inputWrapper">
+                        <label for="betrieb" class="label">Ausbildungsbetrieb:</label>
+                        <input type="text" class="input" name="betrieb" />
+                    </div>
+                    <div class="inputWrapper">
+                        <label for="Telefon" class="label">Telefon:</label>
+                        <input type="text" class="input" name="Telefon" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="inputWrapper">
+                        <label for="ausbilderNachname" class="label">Ansprechpartner Nachname:</label>
+                        <input type="text" class="input" name="ausbilderNachname" />
+                    </div>
+                    <div class="inputWrapper">
+                        <label for="ausbilderVorname" class="label">Ansprechpartner Vorname::</label>
+                        <input type="text" class="input" name="ausbilderVorname" />
+                    </div>
+                </div>
+
+                <div class="btnWrapper">
+                    <button type="submit" class="btnDefault">speichern</button>
+                </div>
+            </form>
+        </div>
+        <script src="script.js"></script>
+    </body>
 </html>
