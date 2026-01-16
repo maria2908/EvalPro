@@ -1,37 +1,38 @@
-// Importiert die bestehende Datenbankverbindung (z. B. SQLite)
+// service/ansprechpartnerService.js
 const db = require('../db/connection');
 
 /**
- * Fügt einen neuen Ansprechpartner in die Datenbank ein
- * 
- * @param {Object} data - Enthält die Ansprechpartner-Daten
- * @param {string} data.name - Nachname
- * @param {string} data.vorname - Vorname
- * @param {string} data.tel - Telefonnummer
- * @param {Function} callback - Callback-Funktion für Erfolg oder Fehler
+ * Insert a new Ansprechpartner into database
+ *
+ * @param {Object} ansprechpartner
+ * @param {string} ansprechpartner.name
+ * @param {string} ansprechpartner.vorname
+ * @param {string} ansprechpartner.tel
+ * @returns {Promise<{id: number}>}
  */
-function insertAnsprechpartner(data, callback) {
-
-  // SQL-Statement zum Einfügen eines Datensatzes
+function insertAnsprechpartner(ansprechpartner) {
   const sql = `
     INSERT INTO Ansprechpartner (name, vorname, tel)
     VALUES (?, ?, ?)
   `;
 
-  // Führt das SQL-Statement mit Platzhaltern aus (Schutz vor SQL-Injection)
-  db.run(sql, [data.name, data.vorname, data.tel], function (err) {
+  const values = [
+    ansprechpartner.name,
+    ansprechpartner.vorname,
+    ansprechpartner.tel
+  ];
 
-    // Fehlerbehandlung
-    if (err) {
-      console.error('Insert error:', err.message);
-      callback(err);
-    } else {
-      // Erfolgreiches Insert → letzte eingefügte ID zurückgeben
-      console.log('Insert successful, ID:', this.lastID);
-      callback(null, { id: this.lastID });
-    }
+  return new Promise((resolve, reject) => {
+    db.run(sql, values, function (err) {
+      if (err) {
+        console.error('Insert Ansprechpartner error:', err.message);
+        return reject(err);
+      }
+
+      // SQLite liefert die ID des neu angelegten Datensatzes
+      resolve({ id: this.lastID });
+    });
   });
 }
 
-// Exportiert die Funktion für andere Module (z. B. Routes)
 module.exports = { insertAnsprechpartner };
