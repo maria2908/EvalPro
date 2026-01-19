@@ -37,4 +37,26 @@ function insertAdresse(adresse) {
   });
 }
 
-module.exports = { insertAdresse };
+/**
+ * Get Adress by ID
+ * @param {number} id
+ * @returns {Promise<Object|null>}
+ */
+function selectAdresseById(id) {
+  const sql = `SELECT * FROM adresse WHERE ID = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.get(sql, [id], (err, row) => {
+      if (err) {
+        console.error('Fetch Adresse by ID error:', err.message);
+        return reject(err);
+      }
+      resolve(row || null); // null if not found
+    });
+  });
+}
+
+module.exports = { 
+  insertAdresse,
+  selectAdresseById
+};

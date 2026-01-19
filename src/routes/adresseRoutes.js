@@ -5,8 +5,10 @@ const express = require('express');
 const router = express.Router();
 
 // Controller-Funktion zum Hinzufügen eines Ansprechpartners
-const { addAnsprechpartner } = require('../controllers/ansprechpartnerController');
-
+const {
+  addAdresse,
+  getAdresseById
+} = require('../controllers/adresseController');
 
 /**
  * POST /
@@ -17,7 +19,11 @@ const { addAnsprechpartner } = require('../controllers/ansprechpartnerController
  * Beispiel:
  * POST http://localhost:3000/index
  */
-router.post('/add', addAnsprechpartner);
+// POST /api/pruefungsausschuss
+router.post('/add', addAdresse);
+
+// GET per ID
+router.get('/id/:id', getAdresseById);
 
 // Router für die Verwendung in der App exportieren
 module.exports = router;
