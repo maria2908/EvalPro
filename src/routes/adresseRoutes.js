@@ -7,7 +7,8 @@ const router = express.Router();
 // Controller-Funktion zum Hinzufügen eines Ansprechpartners
 const {
   addAdresse,
-  getAdresseById
+  getAdresseById,
+  deleteAdresseById
 } = require('../controllers/adresseController');
 
 /**
@@ -19,11 +20,14 @@ const {
  * Beispiel:
  * POST http://localhost:3000/index
  */
-// POST /api/pruefungsausschuss
+// POST /api/adresse
 router.post('/add', addAdresse);
 
 // GET per ID
 router.get('/id/:id', getAdresseById);
+
+// Delete per ID
+router.get('/delete/id/:id', deleteAdresseById);
 
 // Router für die Verwendung in der App exportieren
 module.exports = router;
