@@ -1,6 +1,11 @@
 // controller/schuelerController.js
 const SchuelerBuilder = require('../builders/SchuelerBuilder');
-const { insertSchueler, selectSchuelers, selectSchueler, selectSchuelerAdresse } = require('../service/schuelerService');
+const { insertSchueler,
+        selectSchuelers, 
+        selectSchuelerByName, 
+        selectSchuelerAdresse ,
+        selectSchuelerById
+      } = require('../service/schuelerService');
 
 /**
  * Add a new Schueler
@@ -45,9 +50,9 @@ async function addSchueler(req, res) {
 
 /**
  * Get all Schueler
- * GET /schueler
+ * GET /schueler/list
  */
-async function getSchuelers(req, res) {
+async function getListSchuelers(req, res) {
   try {
     console.log('Fetching all Schueler');
     const result = await selectSchuelers();
@@ -60,9 +65,9 @@ async function getSchuelers(req, res) {
 
 /**
  * Get Schueler by name
- * GET /schueler/:name
+ * GET /schueler/by-name/:name
  */
-async function getSchueler(req, res) {
+async function getSchuelerByName(req, res) {
   try {
     const name = req.params.name;
     if (!name) {
@@ -70,7 +75,7 @@ async function getSchueler(req, res) {
     }
 
     console.log('Fetching Schueler with name:', name);
-    const result = await selectSchueler(name);
+    const result = await selectSchuelerByName(name);
 
     if (!result || result.length === 0) {
       return res.status(404).json({ message: 'Schueler not found' });
@@ -85,8 +90,34 @@ async function getSchueler(req, res) {
 }
 
 /**
+ * Get schueler by id
+ * GET /schueler/id/:id
+ */
+async function getSchuelerById(req, res) {
+  try {
+    const { id } = req.params;
+
+    const result = await selectSchuelerById(id);
+
+    if (!result) {
+      return res.status(404).json({
+        error: 'Schueler not found'
+      });
+    }
+
+    res.status(200).json(result);
+  } catch (err) {
+    console.error('Error fetching Schueler by ID:', err);
+    res.status(500).json({
+      error: 'Database fetch failed',
+      details: err.message
+    });
+  }
+}
+
+/**
  * Get adress for Schueler
- * GET /schueler/:id/adresse
+ * GET /schueler/id/:id/adresse
  */
 async function getSchuelerAdresse(req, res) {
   try {
@@ -113,4 +144,4 @@ async function getSchuelerAdresse(req, res) {
 }
 
 
-module.exports = { addSchueler, getSchuelers, getSchueler, getSchuelerAdresse };
+module.exports = { addSchueler, getListSchuelers, getSchuelerByName, getSchuelerAdresse, getSchuelerById };

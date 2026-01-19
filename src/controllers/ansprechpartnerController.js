@@ -3,7 +3,7 @@ const { insertAnsprechpartner } = require('../service/ansprechpartnerService');
 
 /**
  * Add a new Ansprechpartner
- * POST /ansprechpartner
+ * POST /ansprechpartner/add
  */
 async function addAnsprechpartner(req, res) {
   try {
