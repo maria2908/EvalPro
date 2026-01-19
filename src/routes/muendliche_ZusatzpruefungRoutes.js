@@ -8,7 +8,8 @@ const router = express.Router();
 const {
   addMuendliche_Zusatzpruefung,
   getListMuendliche_Zusatzpruefung,
-  getMuendliche_ZusatzpruefungById
+  getMuendliche_ZusatzpruefungById,
+  deleteMuendliche_ZusatzpruefungById
 } = require('../controllers/muendliche_ZusatzpruefungController');
 
 /**
@@ -28,6 +29,9 @@ router.get('/list', getListMuendliche_Zusatzpruefung);
 
 // GET per ID
 router.get('/id/:id', getMuendliche_ZusatzpruefungById);
+
+// Delete per ID
+router.get('/delete/id/:id', deleteMuendliche_ZusatzpruefungById);
 
 // Router für die Verwendung in der App exportieren
 module.exports = router;
