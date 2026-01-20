@@ -96,10 +96,32 @@ function selectPruefungsausschussByBezeichnung(bezeichnung) {
   });
 }
 
+/**
+ * Delete one Pruefungsausschuss by ID
+ * @param {number} id
+ * @returns {Promise<boolean>} Returns true if deleted, false if not found
+ */
+function removePruefungsausschussById(id) {
+  const sql = `DELETE FROM pruefungsausschuss WHERE ID = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.run(sql, [id], function(err) {
+      if (err) {
+        console.error('Delete Pruefungsausschuss by ID error:', err.message);
+        return reject(err);
+      }
+      // this.changes gibt die Anzahl der betroffenen Zeilen zurück
+      resolve(this.changes > 0);
+    });
+  });
+}
+
+
 
 module.exports = { 
   insertPruefungsausschuss,
   selectAllPruefungsausschuss,
   selectPruefungsausschussById,
-  selectPruefungsausschussByBezeichnung
+  selectPruefungsausschussByBezeichnung,
+  removePruefungsausschussById
 };

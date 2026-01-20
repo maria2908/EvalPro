@@ -3,7 +3,8 @@ const {
   insertPruefungsausschuss,
   selectAllPruefungsausschuss,
   selectPruefungsausschussById,
-  selectPruefungsausschussByBezeichnung
+  selectPruefungsausschussByBezeichnung,
+  removePruefungsausschussById
 } = require('../service/pruefungsausschussService');
 
 /**
@@ -99,4 +100,45 @@ async function getPruefungsausschussByName(req, res) {
   }
 }
 
-module.exports = { addPruefungsausschuss, getListPruefungsausschusse, getPruefungsausschussById, getPruefungsausschussByName };
+async function deletePruefungsausschussById(req, res) {
+  try {
+    const { id } = req.params;
+
+    // check if data exists
+    const existing = await selectPruefungsausschussById(id);
+    if (!existing) {
+      return res.status(404).json({
+        error: 'Pruefungsausschuss not found'
+      });
+    }
+
+    // Delete
+    const deleted = await removePruefungsausschussById(id);
+
+    if (deleted) {
+      res.status(200).json({
+        message: 'Pruefungsausschuss erfolgreich gelöscht',
+        id: id
+      });
+    } else {
+      res.status(500).json({
+        error: 'Löschen fehlgeschlagen'
+      });
+    }
+  } catch (err) {
+    console.error('Error deleting Pruefungsausschuss by ID:', err);
+    res.status(500).json({
+      error: 'Database delete failed',
+      details: err.message
+    });
+  }
+}
+
+
+module.exports = { 
+  addPruefungsausschuss,
+  getListPruefungsausschusse,
+  getPruefungsausschussById,
+  getPruefungsausschussByName,
+  deletePruefungsausschussById
+ };

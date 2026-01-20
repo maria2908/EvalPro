@@ -37,4 +37,47 @@ function insertAdresse(adresse) {
   });
 }
 
-module.exports = { insertAdresse };
+/**
+ * Get Adress by ID
+ * @param {number} id
+ * @returns {Promise<Object|null>}
+ */
+function selectAdresseById(id) {
+  const sql = `SELECT * FROM adresse WHERE ID = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.get(sql, [id], (err, row) => {
+      if (err) {
+        console.error('Fetch Adresse by ID error:', err.message);
+        return reject(err);
+      }
+      resolve(row || null); // null if not found
+    });
+  });
+}
+
+/**
+ * Delete one Adresse by ID
+ * @param {number} id
+ * @returns {Promise<boolean>} Returns true if deleted, false if not found
+ */
+function removeAdresseById(id) {
+  const sql = `DELETE FROM adresse WHERE ID = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.run(sql, [id], function(err) {
+      if (err) {
+        console.error('Delete Adresse by ID error:', err.message);
+        return reject(err);
+      }
+      resolve(this.changes > 0);
+    });
+  });
+}
+
+
+module.exports = { 
+  insertAdresse,
+  selectAdresseById,
+  removeAdresseById
+};

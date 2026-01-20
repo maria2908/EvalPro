@@ -1,5 +1,5 @@
 // service/muendliche_ZusatzpruefungService.js
-const db = require('../config/connection');
+const db = require('../db/connection');
 
 /**
  * Insert a new mündliche Zusatzprüfung into database
@@ -33,4 +33,67 @@ function insertMuendliche_Zusatzpruefung(zusatzpruefung) {
   });
 }
 
-module.exports = { insertMuendliche_Zusatzpruefung };
+/**
+ * Get all mündliche Zusatzprüfungen
+ * @returns {Promise<Array>}
+ */
+function selectAllMuendliche_Zusatzpruefung() {
+  const sql = `SELECT * FROM muendliche_Zusatzpruefung`;
+
+  return new Promise((resolve, reject) => {
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        console.error('Fetch mündliche Zusatzprüfung error:', err.message);
+        return reject(err);
+      }
+      resolve(rows);
+    });
+  });
+}
+
+/**
+ * Get one mündliche Zusatzprüfung by ID
+ * @param {number} id
+ * @returns {Promise<Object|null>}
+ */
+function selectMuendliche_ZusatzpruefungById(id) {
+  const sql = `SELECT * FROM muendliche_Zusatzpruefung WHERE id = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.get(sql, [id], (err, row) => {
+      if (err) {
+        console.error('Fetch mündliche Zusatzprüfung by ID error:', err.message);
+        return reject(err);
+      }
+      resolve(row || null);
+    });
+  });
+}
+
+/**
+ * Delete one mündliche Zusatzprüfung by ID
+ * @param {number} id
+ * @returns {Promise<boolean>} Returns true if deleted, false if not found
+ */
+function removeMuendliche_ZusatzpruefungById(id) {
+  const sql = `DELETE FROM muendliche_Zusatzpruefung WHERE id = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.run(sql, [id], function(err) {
+      if (err) {
+        console.error('Delete mündliche Zusatzprüfung by ID error:', err.message);
+        return reject(err);
+      }
+      resolve(this.changes > 0);
+    });
+  });
+}
+
+
+
+module.exports = {
+  insertMuendliche_Zusatzpruefung,
+  selectAllMuendliche_Zusatzpruefung,
+  selectMuendliche_ZusatzpruefungById,
+  removeMuendliche_ZusatzpruefungById
+};
