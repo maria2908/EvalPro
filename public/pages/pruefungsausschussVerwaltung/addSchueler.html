@@ -14,13 +14,8 @@
 
                 <div class="selectWrapper" style="margin-bottom: 25px;">
                     <label for="ausschuss" class="label">Prüfungsauschuss auswählen:</label>
-                    <select id="ausschuss">
-                        <option value="" disabled selected hidden>
-                            Bitte wählen
-                        </option>
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
+                    <select id="ausschuss" name="pruefungsausschuss_id">
+                        <option value="" disabled selected hidden>Bitte wählen</option>
                     </select>
                 </div>
 
@@ -28,11 +23,11 @@
                 <div class="row">
                     <div class="inputWrapper">
                         <label for="vorname" class="label">Vorname:</label>
-                        <input type="text" class="input" name="vorname" />
+                        <input type="text" required class="input" name="vorname" />
                     </div>
                     <div class="inputWrapper">
-                        <label for="nachname" class="label">Nachname:</label>
-                        <input type="text" class="input" name="nachname" />
+                        <label for="name" class="label">Nachname:</label>
+                        <input type="text" required class="input" name="name" />
                     </div>
                 </div>
                 <div class="row">
@@ -63,8 +58,8 @@
                         <input type="text" class="input" name="betrieb" />
                     </div>
                     <div class="inputWrapper">
-                        <label for="Telefon" class="label">Telefon:</label>
-                        <input type="text" class="input" name="Telefon" />
+                        <label for="telefon" class="label">Telefon:</label>
+                        <input type="text" class="input" name="telefon" />
                     </div>
                 </div>
                 <div class="row">
@@ -73,7 +68,7 @@
                         <input type="text" class="input" name="ausbilderNachname" />
                     </div>
                     <div class="inputWrapper">
-                        <label for="ausbilderVorname" class="label">Ansprechpartner Vorname::</label>
+                        <label for="ausbilderVorname" class="label">Ansprechpartner Vorname:</label>
                         <input type="text" class="input" name="ausbilderVorname" />
                     </div>
                 </div>

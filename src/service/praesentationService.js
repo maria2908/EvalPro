@@ -1,24 +1,35 @@
+// service/praesentationService.js
 const db = require('../config/connection');
 
-function insertPraesentation(data, callback) {
+/**
+ * Insert a new Praesentation into database
+ *
+ * @param {Object} praesentation
+ * @param {number|string} praesentation.bewertungskriterium
+ * @param {number} praesentation.gesamtpunkte
+ * @returns {Promise<{id: number}>}
+ */
+function insertPraesentation(praesentation) {
   const sql = `
-    INSERT INTO praesentation (bewertungskriterium, gesamtpunkte, )
+    INSERT INTO praesentation (bewertungskriterium, gesamtpunkte)
     VALUES (?, ?)
   `;
 
-  const params = [
-      data.bewertungskriterium,
-      data.gesamtpunkte
-    ];
+  const values = [
+    praesentation.bewertungskriterium,
+    praesentation.gesamtpunkte
+  ];
 
-  db.run(sql, params, function (err) {
-    if (err) {
-      console.error('Insert error:', err.message);
-      callback(err);
-    } else {
-      console.log('Insert successful, ID:', this.lastID);
-      callback(null, { id: this.lastID });
-    }
+  return new Promise((resolve, reject) => {
+    db.run(sql, values, function (err) {
+      if (err) {
+        console.error('Insert Praesentation error:', err.message);
+        return reject(err);
+      }
+
+      // SQLite liefert die ID des neu angelegten Datensatzes
+      resolve({ id: this.lastID });
+    });
   });
 }
 

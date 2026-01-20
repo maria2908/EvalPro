@@ -1,6 +1,10 @@
+// service/schuelerService.js
 const db = require('../db/connection');
 
-function insertSchueler(schueler, callback) {
+/**
+ * Insert new Schueler
+ */
+function insertSchueler(schueler) {
   const sql = `
     INSERT INTO schueler (
       name, vorname, ausbildungsbetrieb,
@@ -25,10 +29,91 @@ function insertSchueler(schueler, callback) {
     schueler.muendliche_punkte
   ];
 
-  db.run(sql, values, function (err) {
-    if (err) return callback(err);
-    callback(null, { id: this.lastID });
+  return new Promise((resolve, reject) => {
+    db.run(sql, values, function (err) {
+      if (err) {
+        console.error('Insert error:', err.message);
+        return reject(err);
+      }
+      resolve({ id: this.lastID });
+    });
   });
 }
 
-module.exports = { insertSchueler };
+/**
+ * Select all Schueler
+ */
+function selectSchuelers() {
+  const sql = `SELECT * FROM schueler`;
+
+  return new Promise((resolve, reject) => {
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        console.error('Select all error:', err.message);
+        return reject(err);
+      }
+      resolve(rows);
+    });
+  });
+}
+
+/**
+ * Select Schueler by name
+ */
+function selectSchuelerByName(name) {
+  const sql = `SELECT * FROM schueler WHERE name = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.all(sql, [name], (err, rows) => {
+      if (err) {
+        console.error('Select by name error:', err.message);
+        return reject(err);
+      }
+      resolve(rows);
+    });
+  });
+}
+
+/**
+ * Select Adresse for Schueler
+ */
+function selectSchuelerAdresse(schueler_id) {
+  const sql = `SELECT a.strasse, a.hausnummer, a.plz, a.stadt 
+               FROM schueler s, adresse a 
+               WHERE s.address = a.id and s.id = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.all(sql, [schueler_id], (err, rows) => {
+      if (err) {
+        console.error('Select all error:', err.message);
+        return reject(err);
+      }
+      resolve(rows);
+    });
+  });
+}
+
+/**
+ * Select Schueler by id
+ */
+function selectSchuelerById(id) {
+  const sql = `SELECT * FROM schueler WHERE ID = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.get(sql, [id], (err, row) => {
+      if (err) {
+        console.error('Fetch Schueler by ID error:', err.message);
+        return reject(err);
+      }
+      resolve(row || null); // null if not found
+    });
+  });
+}
+
+module.exports = {
+  insertSchueler,
+  selectSchuelers,
+  selectSchuelerByName,
+  selectSchuelerAdresse,
+  selectSchuelerById
+};

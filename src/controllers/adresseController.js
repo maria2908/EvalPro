@@ -1,49 +1,68 @@
-// Importiert die Service-Funktion zum Einfügen eines Adresse
-const { insertAdresse } = require('../service/adresseService');
-
+// controller/adresseController.js
+const { 
+  insertAdresse,
+  selectAdresseById
+} = require('../service/adresseService');
 
 /**
- * Controller-Funktion zum Anlegen eines neue Adresse
- *
- * Erwartet JSON im Request-Body:
- * {
- *   "strasse": "Hermann-Kohl-Str.",
- *   "hausnummer": "21",
- *   "plz": "93049"
- *   "stadt": "Regensburg"
- * }
+ * Add a new Adresse
+ * POST /adresse
  */
-function addAdresse(req, res) {
+async function addAdresse(req, res) {
+  try {
+    const { strasse, hausnummer, plz, stadt } = req.body;
 
-  // Daten aus dem Request-Body auslesen
-  const data = req.body;
-  console.log('Controller received:', data);
-
-  // Übergibt die Daten an die Service-Schicht
-  insertAdresse(data, (err, result) => {
-
-    // Fehler beim Datenbank-Insert
-    if (err) {
-      console.error('Insert failed:', err.message);
-
-      // HTTP 500 → interner Serverfehler
-      res.status(500).json({
-        error: 'Database insert failed',
-        details: err.message
-      });
-
-    } else {
-      // Erfolgreiches Insert
-      console.log('Insert succeeded:', result);
-
-      // HTTP 201 → Ressource erfolgreich erstellt
-      res.status(201).json({
-        message: 'Adresse added successfully!',
-        id: result.id
+    // Einfache Validierung
+    if (!strasse || !hausnummer || !plz || !stadt) {
+      return res.status(400).json({
+        error: 'Missing required address fields'
       });
     }
-  });
+
+    const result = await insertAdresse({
+      strasse,
+      hausnummer,
+      plz,
+      stadt
+    });
+
+    res.status(201).json({
+      message: 'Adresse successfully added',
+      id: result.id
+    });
+
+  } catch (err) {
+    console.error('Error adding Adresse:', err);
+    res.status(500).json({
+      error: 'Database insert failed',
+      details: err.message
+    });
+  }
 }
 
-// Exportiert den Controller für die Routen
-module.exports = { addAdresse };
+async function getAdresseById(req, res) {
+  try {
+    const { id } = req.params;
+
+    const result = await selectAdresseById(id);
+
+    if (!result) {
+      return res.status(404).json({
+        error: 'Adress not found'
+      });
+    }
+
+    res.status(200).json(result);
+  } catch (err) {
+    console.error('Error fetching Adress by ID:', err);
+    res.status(500).json({
+      error: 'Database fetch failed',
+      details: err.message
+    });
+  }
+}
+
+module.exports = { 
+  addAdresse,
+  getAdresseById
+};

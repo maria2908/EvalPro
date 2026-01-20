@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>schriftliche Prüfung | EvalPro</title>
+</head>
+<body>
+    <div class="container dokuWrapper">
+        <h1>Punkte der Projektdokumentation</h1>
+        <form id="projektdokumentationForm" class="fromDoku">
+            <h2>Gesamtgestaltung</h2>
+            <div class="inputWrapper">
+                <label for="bezeichnung" class="label">formale Gestaltung:</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" placeholder="Punkte" class="input" name="bezeichnung" />
+            </div>
+            <div class="inputWrapper">
+                <label for="bezeichnung" class="label">sprachliche Gestaltung:</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" placeholder="Punkte" class="input" name="bezeichnung" />
+            </div>
+            <h2>Inhaltsübersicht</h2>
+            <div class="inputWrapper">
+                <label for="ausbildungsberuf" class="label">Aufbau, Plausibilität, Vollständigkeit:</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" class="input" placeholder="Punkte" name="ausbildungsberuf" />
+            </div>
+            <h2>Beschreibung / Konkretisierung des Auftrages</h2>
+            <div class="inputWrapper">
+                <label for="pruefungstage" class="label">Verständlichkeit:</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" class="input" placeholder="Punkte" name="pruefungstage" />
+            </div>
+            <div class="inputWrapper">
+                <label for="pruefungstage" class="label">Nachvollziehbarkeit:</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" class="input" placeholder="Punkte" name="pruefungstage" />
+            </div>
+            <div class="inputWrapper">
+                <label for="pruefungstage" class="label">Angemessene Darstellung der relevanten Einflussfaktoren:</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" class="input" placeholder="Punkte" name="pruefungstage" />
+            </div>
+            <h2>Bescheibung der Prozessschritte und der ersielten Ergebnisse</h2>
+            <div class="inputWrapper">
+                <label for="pruefungstage" class="label">Plausibilität der Begründung der Prozessschritte:</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" class="input" placeholder="Punkte" name="pruefungstage" />
+            </div>
+            <div class="inputWrapper">
+                <label for="pruefungstage" class="label">Zielorientierung der Vorgehensweise:</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" class="input" placeholder="Punkte" name="pruefungstage" />
+            </div>
+            <div class="inputWrapper">
+                <label for="pruefungstage" class="label">Plausibilität des Zeitaufwandes für die Prozessschritte:</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" class="input" placeholder="Punkte" name="pruefungstage" />
+            </div>
+            <h2>Betriebliche Dokumentation</h2>
+            <div class="inputWrapper">
+                <label for="pruefungstage" class="label">dem Auftrag / Teilauftrag angemessen:</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" class="input" placeholder="Punkte" name="pruefungstage" />
+            </div>
+            <div class="ergebnisWrapper">
+                <h2>Ergebnis Projektdokumentation</h2>
+                <p>blbla Punkte</p>
+            </div>
+            <div class="btnWrapper">
+                <button type="submit" class="btnDefault">speichern</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

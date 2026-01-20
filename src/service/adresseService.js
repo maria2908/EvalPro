@@ -1,38 +1,62 @@
-// Importiert die bestehende Datenbankverbindung (z. B. SQLite)
+// service/adresseService.js
 const db = require('../db/connection');
 
 /**
- * Fügt einen neuen Adresse in die Datenbank ein
- * 
- * @param {Object} data - Enthält die Adresse-Daten
- * @param {string} data.strasse - Strasse
- * @param {number} data.hausnummer - Hausnummer
- * @param {number} data.plz - PLZ
- * @param {string} data.stadt - Stadt
- * @param {Function} callback - Callback-Funktion für Erfolg oder Fehler
+ * Insert a new Adresse into database
+ *
+ * @param {Object} adresse
+ * @param {string} adresse.strasse
+ * @param {string} adresse.hausnummer
+ * @param {string} adresse.plz
+ * @param {string} adresse.stadt
+ * @returns {Promise<{id: number}>}
  */
-function insertAdresse(data, callback) {
-
-  // SQL-Statement zum Einfügen eines Datensatzes
+function insertAdresse(adresse) {
   const sql = `
-    INSERT INTO adresse (stasse, hausnummer, plz, stadt)
+    INSERT INTO adresse (strasse, hausnummer, plz, stadt)
     VALUES (?, ?, ?, ?)
   `;
 
-  // Führt das SQL-Statement mit Platzhaltern aus (Schutz vor SQL-Injection)
-  db.run(sql, [data.strasse, data.hausnummer, data.plz, data.stadt], function (err) {
+  const values = [
+    adresse.strasse,
+    adresse.hausnummer,
+    adresse.plz,
+    adresse.stadt
+  ];
 
-    // Fehlerbehandlung
-    if (err) {
-      console.error('Insert error:', err.message);
-      callback(err);
-    } else {
-      // Erfolgreiches Insert → letzte eingefügte ID zurückgeben
-      console.log('Insert successful, ID:', this.lastID);
-      callback(null, { id: this.lastID });
-    }
+  return new Promise((resolve, reject) => {
+    db.run(sql, values, function (err) {
+      if (err) {
+        console.error('Insert Adresse error:', err.message);
+        return reject(err);
+      }
+
+      // SQLite liefert die neue ID über this.lastID
+      resolve({ id: this.lastID });
+    });
   });
 }
 
-// Exportiert die Funktion für andere Module (z. B. Routes)
-module.exports = { insertAdresse };
+/**
+ * Get Adress by ID
+ * @param {number} id
+ * @returns {Promise<Object|null>}
+ */
+function selectAdresseById(id) {
+  const sql = `SELECT * FROM adresse WHERE ID = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.get(sql, [id], (err, row) => {
+      if (err) {
+        console.error('Fetch Adresse by ID error:', err.message);
+        return reject(err);
+      }
+      resolve(row || null); // null if not found
+    });
+  });
+}
+
+module.exports = { 
+  insertAdresse,
+  selectAdresseById
+};

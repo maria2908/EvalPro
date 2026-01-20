@@ -177,7 +177,7 @@ h2 {
     border: 2px solid var(--evalpro-color-grey);
     border-radius: var(--evalpro-border-radius-s);
     color: #000;
-    padding: 8px 12px;
+    padding: 5px 12px;
 }
 
 .input:focus,
