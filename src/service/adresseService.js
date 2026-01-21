@@ -75,6 +75,9 @@ function removeAdresseById(id) {
   });
 }
 
+// function updateAdresse(id) {
+//   const sql;
+// }
 
 module.exports = { 
   insertAdresse,
