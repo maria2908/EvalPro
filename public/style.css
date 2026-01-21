@@ -35,85 +35,58 @@ h2 {
   min-height: 100vh;
 }
 
-/* SIDEBAR */
-.sidebar {
-  width: 260px;
-  background: #e30613;
-  color: white;
-  padding: 20px 0;
-}
-/* LOGO AREA */
-.sidebar-header {
+/* HEADER */
+.header {
+  background-color: var(--evalpro-color-red);
+  width: 100%;
   display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.logo-wrapper {
-  background: white;
-    border-radius: 0 0 120px 120px;
-    padding: 58px;
-    margin-top: -21px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.logo-wrapper img {
-  width: 100px;
-  height: auto;
+.headerRight {
+  position: relative;
+  color: #fff;
+  font-size: 22px;
+  top: 45px;
+  right: 50px;
 }
 
 
-/* MENU */
-.menu {
-  list-style: none;
-  margin-top: 30px;
+.headerLeft {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
 }
 
-.menu > li {
-  margin-bottom: 6px;
+
+.headerLeft .logoWrapper {
+  height: 100%;
+  background-color: #fff;
+  padding: 20px 50px;
 }
 
-.menu a,
-.menu span {
-  display: block;
-  padding: 14px 20px;
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
-  border-radius: 8px 0 0 8px;
+.headerLeft .homeWrapper {
+  position: relative;
+  background-color: transparent;
+  border: 2px solid #fff;
+  border-radius: var(--evalpro-border-radius-s);
+  height: 75px;
+  padding: 15px;
+  top: 25px;
 }
 
-.menu a:hover,
-.menu span:hover {
-  background: rgba(255, 255, 255, 0.15);
+.homeWrapper:hover,
+.homeWrapper:focus {
+  background-color: #fff;
 }
 
-/* SUBMENU */
-.has-submenu > span::after {
-  content: "⌄";
-  float: right;
+.homeWrapper:hover img,
+.homeWrapper:focus img {
+  filter: brightness(0) saturate(100%) invert(15%) sepia(56%) saturate(6285%) hue-rotate(349deg) brightness(93%) contrast(111%);
 }
 
-.submenu {
-  list-style: none;
-  margin-left: 20px;
-  margin-top: 5px;
-}
-
-.submenu li a {
-  font-size: 14px;
-  padding: 10px 20px;
-  background: white;
-  color: #c90511;
-  border-radius:  0;
-}
-
-.submenu li a:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
+.homeWrapper img { filter: brightness(0) saturate(100%) invert(99%) sepia(0%) saturate(0%) hue-rotate(326deg) brightness(115%) contrast(101%) }
 
 /* CONTENT AREA */
 .content {

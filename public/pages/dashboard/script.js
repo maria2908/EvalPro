@@ -1,7 +1,9 @@
-document.addEventListener('DOMContentLoaded', () => {
+function initDashboard() {
     loadPruefungsausschuesse();
     loadSchueler();
-});
+}
+
+initDashboard();
 
 
 /* PRÜFUNGSAUSSCHUSS AUSGEBEN */

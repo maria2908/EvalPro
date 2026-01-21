@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /* PRÜFUNGSAUSSCHUSS AUSGEBEN */
 
 async function loadPruefungsausschuesse() {
-    const select = document.getElementById('ausschuss');
+    const select = document.getElementById('pruefungsausschuss_id');
 
     try {
         const res = await fetch('/api/pruefungsausschuss/list');
@@ -39,7 +39,9 @@ async function loadPruefungsausschuesse() {
 
         data.forEach(pa => {
             const option = document.createElement('option');
-            option.value = pa.ID;          // 👈 WICHTIG: ID!
+            option.value = pa.ID;
+            console.log(option);
+            
             option.textContent = pa.bezeichnung;
             select.appendChild(option);
         });
@@ -58,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         const formData = Object.fromEntries(new FormData(form));
-        console.log(formData);
 
         try {
             /* ADRESSE SPEICHERN */
@@ -90,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const ansprechpartnerResult = await ansprechpartnerRes.json();
             const ansprechpartnerId = ansprechpartnerResult.id;
-
 
             /* SCHÜLER SPEICHERN */
             const schuelerRes = await fetch('/api/schueler/add', {

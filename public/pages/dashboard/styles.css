@@ -86,14 +86,6 @@
   border-color: var(--evalpro-color-red);
 }
 
-.menu-btn {
-  background: none;
-  border: 1px solid #333;
-  border-radius: 6px;
-  padding: 4px 8px;
-  cursor: pointer;
-}
-
 .cardFooter {
   display: flex;
   justify-content: flex-end;
