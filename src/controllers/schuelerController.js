@@ -4,7 +4,8 @@ const { insertSchueler,
         selectSchuelers, 
         selectSchuelerByName, 
         selectSchuelerAdresse ,
-        selectSchuelerById
+        selectSchuelerById,
+        removeSchuelerById
       } = require('../service/schuelerService');
 
 /**
@@ -144,5 +145,48 @@ async function getSchuelerAdresse(req, res) {
   }
 }
 
+/**
+ * Delete schueler by id
+ * POST /delete/id/:id
+ */
+async function deleteSchuelerById(req, res) {
+  try {
+    const schuelerId = Number(req.params.id);
 
-module.exports = { addSchueler, getListSchuelers, getSchuelerByName, getSchuelerAdresse, getSchuelerById };
+    const existing = await selectSchuelerById(schuelerId);
+    if (!existing) {
+      return res.status(404).json({
+        error: 'Schueler not found'
+      });
+    }
+
+    const changes = await removeSchuelerById(schuelerId);
+
+    if (changes > 0) {
+      return res.status(200).json({
+        message: 'Schueler erfolgreich gelöscht',
+        id: schuelerId
+      });
+    }
+
+    res.status(500).json({
+      error: 'Löschen fehlgeschlagen'
+    });
+
+  } catch (err) {
+    console.error('Error deleting Schueler by ID:', err);
+    res.status(500).json({
+      error: 'Database delete failed',
+      details: err.message
+    });
+  }
+}
+
+
+module.exports = { addSchueler, 
+                   getListSchuelers, 
+                   getSchuelerByName, 
+                   getSchuelerAdresse, 
+                   getSchuelerById,
+                   deleteSchuelerById
+                  };
