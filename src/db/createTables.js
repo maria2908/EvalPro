@@ -14,16 +14,11 @@ function createTables(db) {
 
             -- Startet eine Transaktion
             BEGIN TRANSACTION;
-            
-            -- Ansprechpartner-Tabelle
-            CREATE TABLE ansprechpartner (
-                ID INTEGER PRIMARY KEY,
-                name TEXT NOT NULL,
-                vorname TEXT NOT NULL,
-                tel TEXT
-            );
-            
-            -- Adress-Tabelle
+
+            -- =========================
+            -- BASIS-TABELLEN
+            -- =========================
+
             CREATE TABLE adresse (
                 ID INTEGER PRIMARY KEY,
                 strasse TEXT NOT NULL,
@@ -31,8 +26,21 @@ function createTables(db) {
                 PLZ TEXT,
                 stadt TEXT
             );
-            
-            -- Bewertungskriterien für Prüfungen
+
+            CREATE TABLE ansprechpartner (
+                ID INTEGER PRIMARY KEY,
+                name TEXT NOT NULL,
+                vorname TEXT NOT NULL,
+                tel TEXT
+            );
+
+            CREATE TABLE pruefungsausschuss (
+                ID INTEGER PRIMARY KEY,
+                bezeichnung TEXT NOT NULL,
+                ausbildungsberuf TEXT,
+                pruefungstage TEXT
+            );
+
             CREATE TABLE bewertungskriterium (
                 ID INTEGER PRIMARY KEY,
                 bewertungsteil TEXT NOT NULL,
@@ -40,8 +48,7 @@ function createTables(db) {
                 punkte INTEGER,
                 kommentare TEXT
             );
-            
-            -- Dokumentation (Teilprüfung)
+
             CREATE TABLE dokumentation (
                 ID INTEGER PRIMARY KEY,
                 bewertungskriterium INTEGER,
@@ -49,8 +56,7 @@ function createTables(db) {
                 FOREIGN KEY (bewertungskriterium)
                     REFERENCES bewertungskriterium(ID)
             );
-            
-            -- Fachgespräch (Teilprüfung)
+
             CREATE TABLE fachgespraech (
                 ID INTEGER PRIMARY KEY,
                 bewertungskriterium INTEGER,
@@ -58,8 +64,7 @@ function createTables(db) {
                 FOREIGN KEY (bewertungskriterium)
                     REFERENCES bewertungskriterium(ID)
             );
-            
-            -- Präsentation (Teilprüfung)
+
             CREATE TABLE praesentation (
                 ID INTEGER PRIMARY KEY,
                 bewertungskriterium INTEGER,
@@ -67,53 +72,67 @@ function createTables(db) {
                 FOREIGN KEY (bewertungskriterium)
                     REFERENCES bewertungskriterium(ID)
             );
-            
-            -- Mündliche Zusatzprüfung
+
             CREATE TABLE muendliche_Zusatzpruefung (
                 ID INTEGER PRIMARY KEY,
                 pruefungsbereich TEXT,
                 punktzahl INTEGER
             );
-            
-            -- Prüfungsausschuss
-            CREATE TABLE pruefungsausschuss (
-                ID INTEGER PRIMARY KEY,
-                bezeichnung TEXT NOT NULL,
-                ausbildungsberuf TEXT,
-                pruefungstage TEXT
-            );
-            
-            -- Schüler-Tabelle (Zentrale Tabelle)
+
+            -- =========================
+            -- SCHUELER (AGGREGATE ROOT)
+            -- =========================
+
             CREATE TABLE schueler (
                 ID INTEGER PRIMARY KEY,
                 name TEXT NOT NULL,
                 vorname TEXT NOT NULL,
                 ausbildungsbetrieb TEXT,
-            
-                address INTEGER,
+
+                address_id INTEGER,
                 ansprechpartner_id INTEGER,
                 pruefungsausschuss_id INTEGER,
+
                 AP1_punkte INTEGER,
                 AP2GA1_punkte INTEGER,
                 AP2GA2_punkte INTEGER,
                 AP2GA3_punkte INTEGER,
+
                 muendliche_id INTEGER,
                 dok_id INTEGER,
                 fach_id INTEGER,
                 praesentation_id INTEGER,
-            
-                -- Fremdschlüssel-Beziehungen
-                FOREIGN KEY (address) REFERENCES adresse(ID),
+
+                FOREIGN KEY (address_id) REFERENCES adresse(ID),
                 FOREIGN KEY (ansprechpartner_id) REFERENCES ansprechpartner(ID),
-                FOREIGN KEY (pruefungsausschuss_id) REFERENCES pruefungsausschuss(ID),
                 FOREIGN KEY (dok_id) REFERENCES dokumentation(ID),
                 FOREIGN KEY (fach_id) REFERENCES fachgespraech(ID),
                 FOREIGN KEY (praesentation_id) REFERENCES praesentation(ID),
-                FOREIGN KEY (muendliche_id)REFERENCES muendliche_Zusatzpruefung(ID)
+                FOREIGN KEY (muendliche_id) REFERENCES muendliche_Zusatzpruefung(ID),
+
+                -- ❗ bewusst KEIN CASCADE
+                FOREIGN KEY (pruefungsausschuss_id)
+                    REFERENCES pruefungsausschuss(ID)
             );
-            
-            -- Transaktion erfolgreich abschließen
+
+            -- =========================
+            -- TRIGGER: LÖSCHT ALLES,
+            -- WENN EIN SCHUELER GELÖSCHT WIRD
+            -- =========================
+
+            CREATE TRIGGER delete_schueler_dependencies
+            AFTER DELETE ON schueler
+            BEGIN
+                DELETE FROM adresse WHERE ID = OLD.address_id;
+                DELETE FROM ansprechpartner WHERE ID = OLD.ansprechpartner_id;
+                DELETE FROM dokumentation WHERE ID = OLD.dok_id;
+                DELETE FROM fachgespraech WHERE ID = OLD.fach_id;
+                DELETE FROM praesentation WHERE ID = OLD.praesentation_id;
+                DELETE FROM muendliche_Zusatzpruefung WHERE ID = OLD.muendliche_id;
+            END;
+
             COMMIT;
+
         `;
 
         // Führt das gesamte SQL-Schema aus
