@@ -1,0 +1,38 @@
+.fromDoku {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid var(--evalpro-color-grey);
+  border-radius: var(--evalpro-border-radius-m);
+}
+
+/* INPUT & SELECT */
+
+.inputWrapper, 
+.selectWrapper {
+  width: 60%;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.btnWrapper {
+  width: 100%;
+  text-align: end;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+
+.row .inputWrapper { flex: 1; }
+
+
+.ergebnisWrapper { 
+  margin-top: 25px;
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+}

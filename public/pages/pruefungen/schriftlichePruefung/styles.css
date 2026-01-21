@@ -1,0 +1,24 @@
+/* INPUT & SELECT */
+
+.inputWrapper, 
+.selectWrapper {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.aussschussWrapper form { width: 500px; }
+.schuelerWrapper form { width: 700px; }
+
+.btnWrapper {
+  width: 100%;
+  text-align: end;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+
+.row .inputWrapper { flex: 1; }

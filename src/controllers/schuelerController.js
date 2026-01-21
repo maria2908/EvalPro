@@ -56,6 +56,7 @@ async function getListSchuelers(req, res) {
   try {
     console.log('Fetching all Schueler');
     const result = await selectSchuelers();
+    console.log('ListSchuelers result:', result); // 🔹 loggen
     res.status(200).json(result);
   } catch (err) {
     console.error('Error fetching Schuelers:', err);
