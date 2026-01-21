@@ -1,39 +1,33 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EvalPro - Start</title>
-</head>
-<body>
-<form id="ansprechpartnerForm">
-    <input type="text" name="name" placeholder="Name" required />
-    <input type="text" name="vorname" placeholder="Vorname" required />
-    <input type="text" name="tel" placeholder="Handynummer" />
-    <button type="submit">Submit</button>
-</form>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('ansprechpartnerForm');
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(form));
-
-        try {
-            const res = await fetch('/api/ansprechpartner', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-            const result = await res.json();
-            alert(JSON.stringify(result));
-        } catch (err) {
-            alert('Fehler beim Senden: ' + err.message);
-        }
-    });
-});
-
-</script>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../style.css">
+        <link rel="stylesheet" href="styles.css">
+        <title>Prüfungsausschuss anlegen | EvalPro</title>
+    </head>
+    <body>
+        <div class="container aussschussWrapper">
+            <h1>Prüfungsausschuss anlegen</h1>
+            <form id="pruefungsausschussForm">
+                <div class="inputWrapper">
+                    <label for="bezeichnung" class="label">Bezeichnung:</label>
+                    <input type="text" class="input" name="bezeichnung" />
+                </div>
+                <div class="inputWrapper">
+                    <label for="ausbildungsberuf" class="label">Ausbildungsberuf:</label>
+                    <input type="text" class="input" name="ausbildungsberuf" />
+                </div>
+                <div class="inputWrapper">
+                    <label for="pruefungstage" class="label">Prüfungstage:</label>
+                    <input type="text" class="input" name="pruefungstage" />
+                </div>
+                <div class="btnWrapper">
+                    <button type="submit" class="btnDefault">speichern</button>
+                </div>
+            </form>
+        </div>
+        <script src="script.js"></script>
+    </body>
 </html>

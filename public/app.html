@@ -7,55 +7,50 @@
      <link rel="stylesheet" href="style.css">
 </head>
 <body>
-        <nav class="sidebar">
-   <div class="sidebar-header">
-  <div class="logo-wrapper">
-    <img src="assets/logo.svg" alt="Stadt Regensburg Logo" />
+  <div class="header">
+    <div class="headerLeft">
+      <div class="logoWrapper">
+        <img src="assets/logo.svg" alt="Stadt Regensburg Logo" />
+      </div>
+        <button class="homeWrapper" onClick="loadPage('dashboard/dashboard')"  href="/pages/dashboard/uebersicht.html">
+          <img src="assets/house.svg" height="40px" width="40px" alt="Dashbord" />
+        </a>
+    </div>
+    <div class="headerRight">
+      <p>Schüler Name oder Ausschuss</p>
+    </div>
   </div>
-</div>
-    <nav>
-      <ul class="menu">
-        <li>
-          <a href="/pruefungsausschuss">Prüfungsausschuss verwalten</a>
-        </li>
+  
+  <main id="content"></main>
 
-        <li class="has-submenu">
-          <span>Projektdokumentation bewerten</span>
-          <ul class="submenu">
-            <li><a href="#">Punkte & Kommentare erfassen</a></li>
-            <li><a href="#">Fragen für Fachgespräch & Ergebnis</a></li>
-          </ul>
-        </li>
+  <script>
+    let currentScript = null;
 
-        <li><a href="#">Projektpräsentation bewerten</a></li>
-        <li><a href="#">Fachgespräch</a></li>
-        <li><a href="#">Gesamtergebnis berechnen</a></li>
-        <li><a href="#">Mündliche Ergänzungsprüfung</a></li>
-        <li><a href="#">Datenverwaltung</a></li>
-      </ul>
-    </nav>
+    function loadPage(page) {
+      fetch(`/pages/${page}/${page}.html`)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("content").innerHTML = html;
+          loadPageScript(page);
+        })
+        .catch(err => console.error("Fehler beim Laden:", err));
+    }
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('ansprechpartnerForm');
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(form));
+    function loadPageScript(page) {
+      if (currentScript) {
+        currentScript.remove();
+      }
 
-        try {
-            const res = await fetch('/api/ansprechpartner', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-            const result = await res.json();
-            alert(JSON.stringify(result));
-        } catch (err) {
-            alert('Fehler beim Senden: ' + err.message);
-        }
-    });
-});
+      currentScript = document.createElement("script");
+      currentScript.src = `/pages/${page}/script.js`;
+      currentScript.defer = true;
+      console.log(currentScript);
+      
+      document.body.appendChild(currentScript);
+    }
 
-</script>
+    // Startseite
+    loadPage("dashboard");
+  </script>
 </body>
 </html>

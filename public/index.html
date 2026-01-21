@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #E30613 0%, #7e1111 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -32,7 +32,7 @@
         }
 
         h1 {
-            color: #667eea;
+            color: #E30613;
             margin-bottom: 10px;
             font-size: 2.5em;
         }
@@ -87,27 +87,38 @@
             color: white;
         }
 
-        .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-
+        
         .button.windows {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #E30613 0%, #7e1111 100%);
         }
-
+        
         .button.mac {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #E30613 0%, #7e1111 100%);
         }
-
+        
         .button.open {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #E30613 0%, #7e1111 100%);
             font-size: 20px;
         }
+        
+        .button:hover,
+        .button:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            background: #fff;
+            color: #E30613;
+            outline: none;
+        }
+
+        .button:hover .icon,
+        .button:focus .icon {
+            filter: brightness(0) saturate(100%) invert(15%) sepia(56%) saturate(6285%) hue-rotate(349deg) brightness(93%) contrast(111%);
+        } 
 
         .icon {
             margin-right: 10px;
             font-size: 24px;
+            filter: brightness(0) saturate(100%) invert(99%) sepia(0%) saturate(0%) hue-rotate(326deg) brightness(115%) contrast(101%);
         }
 
         .instructions {
@@ -119,7 +130,7 @@
         }
 
         .instructions h3 {
-            color: #667eea;
+            color: #E30613;
             margin-bottom: 15px;
         }
 
@@ -137,7 +148,7 @@
             width: 20px;
             height: 20px;
             border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
+            border-top: 3px solid #E30613;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-right: 10px;
@@ -150,7 +161,7 @@
 
         .redirect-message {
             margin-top: 20px;
-            color: #667eea;
+            color: #666;
             font-weight: 500;
         }
     </style>
