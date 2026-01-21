@@ -2,7 +2,8 @@
 const {
   insertMuendliche_Zusatzpruefung,
   selectAllMuendliche_Zusatzpruefung,
-  selectMuendliche_ZusatzpruefungById
+  selectMuendliche_ZusatzpruefungById,
+  removeMuendliche_ZusatzpruefungById
 } = require('../service/muendliche_ZusatzpruefungService');
 
 /**
@@ -83,8 +84,46 @@ async function getMuendliche_ZusatzpruefungById(req, res) {
   }
 }
 
+/**
+ * Delete mündliche Zusatzprüfung by ID
+ * DELETE /muendliche-zusatzpruefung/:id
+ */
+async function deleteMuendliche_ZusatzpruefungById(req, res) {
+  try {
+    const { id } = req.params;
+
+    const existing = await selectMuendliche_ZusatzpruefungById(id);
+    if (!existing) {
+      return res.status(404).json({
+        error: 'Mündliche Zusatzprüfung not found'
+      });
+    }
+
+    const deleted = await removeMuendliche_ZusatzpruefungById(id);
+
+    if (deleted) {
+      res.status(200).json({
+        message: 'Mündliche Zusatzprüfung erfolgreich gelöscht',
+        id: id
+      });
+    } else {
+      res.status(500).json({
+        error: 'Löschen fehlgeschlagen'
+      });
+    }
+  } catch (err) {
+    console.error('Error deleting mündliche Zusatzprüfung by ID:', err);
+    res.status(500).json({
+      error: 'Database delete failed',
+      details: err.message
+    });
+  }
+}
+
+
 module.exports = { 
   addMuendliche_Zusatzpruefung,
   getListMuendliche_Zusatzpruefung,
-  getMuendliche_ZusatzpruefungById
+  getMuendliche_ZusatzpruefungById,
+  deleteMuendliche_ZusatzpruefungById
  };

@@ -70,9 +70,30 @@ function selectMuendliche_ZusatzpruefungById(id) {
   });
 }
 
+/**
+ * Delete one mündliche Zusatzprüfung by ID
+ * @param {number} id
+ * @returns {Promise<boolean>} Returns true if deleted, false if not found
+ */
+function removeMuendliche_ZusatzpruefungById(id) {
+  const sql = `DELETE FROM muendliche_Zusatzpruefung WHERE id = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.run(sql, [id], function(err) {
+      if (err) {
+        console.error('Delete mündliche Zusatzprüfung by ID error:', err.message);
+        return reject(err);
+      }
+      resolve(this.changes > 0);
+    });
+  });
+}
+
+
 
 module.exports = {
   insertMuendliche_Zusatzpruefung,
   selectAllMuendliche_Zusatzpruefung,
-  selectMuendliche_ZusatzpruefungById
+  selectMuendliche_ZusatzpruefungById,
+  removeMuendliche_ZusatzpruefungById
 };
