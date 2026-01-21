@@ -78,6 +78,41 @@ function selectPruefungsausschussById(id) {
 }
 
 /**
+ * Update Pruefungsausschuss (nur wenn Änderungen vorliegen)
+ * @param {number} id
+ * @param {Object} data
+ * @returns {Promise<boolean>} true = updated, false = no changes
+ */
+function updatePruefungsausschuss(id, data) {
+  const sql = `
+    UPDATE pruefungsausschuss
+    SET bezeichnung = ?,
+        ausbildungsberuf = ?,
+        pruefungstage = ?
+    WHERE ID = ?
+  `;
+
+  return new Promise((resolve, reject) => {
+    db.run(
+      sql,
+      [
+        data.bezeichnung,
+        data.ausbildungsberuf,
+        data.pruefungstage,
+        id
+      ],
+      function (err) {
+        if (err) {
+          console.error('Update Pruefungsausschuss error:', err.message);
+          return reject(err);
+        }
+        resolve(this.changes > 0);
+      }
+    );
+  });
+}
+
+/**
  * Get one Pruefungsausschuss by bezeichnung
  * @param {string} bezeichnung
  * @returns {Promise<Object|null>}
@@ -123,5 +158,6 @@ module.exports = {
   selectAllPruefungsausschuss,
   selectPruefungsausschussById,
   selectPruefungsausschussByBezeichnung,
+  updatePruefungsausschuss,
   removePruefungsausschussById
 };
