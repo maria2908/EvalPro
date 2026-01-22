@@ -1,0 +1,264 @@
+:root {
+    --evalpro-color-red: #E30613;
+    --evalpro-color-grey: #c1c1c1;
+    --evalpro-color-grey-dark: #5f6061;
+
+    --evalpro-border-radius-m: 15px;
+    --evalpro-border-radius-s: 6px;
+}
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* HEADLINE */
+h1 {
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--evalpro-color-red);
+    margin-bottom: 30px;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+/* LAYOUT */
+.layout {
+  display: flex;
+  min-height: 100vh;
+  align-items: stretch;
+}
+@keyframes rollDown {
+  0%   { transform: rotate(0deg) translateY(0); }
+  60%  { transform: rotate(200deg) translateY(2px); }
+  100% { transform: rotate(180deg) translateY(-2px); }
+}
+
+@keyframes rollUp {
+  0%   { transform: rotate(180deg) translateY(-2px); }
+  60%  { transform: rotate(-20deg) translateY(2px); }
+  100% { transform: rotate(0deg) translateY(0); }
+}
+
+.has-submenu.open .submenu-arrow {
+  animation: rollDown 0.45s ease forwards;
+}
+
+.has-submenu:not(.open) .submenu-arrow {
+  animation: rollUp 0.45s ease forwards;
+}
+
+
+/* SIDEBAR */
+
+
+.sidebar {
+  width: min(280px, 80vw);
+  background: var(--evalpro-color-red);
+  color: white;
+  padding: 20px 0 0 0;
+  min-height: 100%;
+}
+
+.content {
+  flex: 1;
+}
+
+/* LOGO AREA */
+.sidebar-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.logo-wrapper {
+margin-bottom: -90px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.logo-wrapper img {
+     width: 103%;
+    height: 100%;
+    position: relative;
+    bottom: 51%;
+}
+
+
+/* MENU */
+.menu {
+  list-style: none;
+  margin-top: 30px;
+}
+
+.menu > li {
+  margin-bottom: 6px;
+}
+
+.menu a,
+.menu span {
+  display: block;
+  padding: 14px 12px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 8px 0 0 8px;
+}
+
+.menu a:hover,
+.menu span:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+
+.submenu-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* arrow icon */
+.submenu-arrow {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.35s ease, translate 0.35s ease;
+  transform-origin: center;
+}
+
+/* cool "rolling" open effect */
+.has-submenu.open .submenu-arrow {
+  transform: rotate(180deg) translateY(-2px);
+}
+
+
+/* SUBMENU (HIDE BY DEFAULT) */
+.submenu {
+  list-style: none;
+  margin-left: 20px;
+  margin-top: 6px;
+  display: none;           
+}
+
+/* show submenu when open */
+.has-submenu.open > .submenu {
+  display: block;
+}
+
+
+.submenu li a {
+  font-size: 14px;
+  padding: 10px 20px;
+  background: white;
+  color:var(--evalpro-color-red);
+  border-radius:  0;
+}
+
+.submenu li a:hover {
+  background: #f2f2f2;
+}
+
+/* ACTIVE MENU ITEM (clicked one) */
+.menu a.active,
+.menu span.active {
+  background: white;
+  color: var(--evalpro-color-red);
+}
+
+/* make arrow follow active color */
+.menu span.active .submenu-arrow {
+  filter: brightness(0) saturate(100%) invert(13%) sepia(90%) saturate(6200%) hue-rotate(350deg) brightness(95%) contrast(110%);
+}
+
+
+
+.list-item {
+  position: relative;
+  padding: 12px 16px;
+}
+
+.list-item .actions {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+}
+
+.list-item:hover .actions {
+  display: block;
+}
+
+/* BUTTON */
+.btnDefault {
+    background-color: var(--evalpro-color-red);
+    border: 2px solid var(--evalpro-color-red);
+    border-radius: var(--evalpro-border-radius-s);
+    color: #fff;
+    padding: 8px 12px;
+}
+
+.btnDefault:hover,
+.btnDefault:focus,
+.btnDefault:focus-visible {
+    background-color: transparent;
+    color: var(--evalpro-color-red);
+    outline: none;
+}
+
+.btnPrimary {
+    background-color: #fff;
+    border: 2px solid var(--evalpro-color-red);
+    border-radius: var(--evalpro-border-radius-s);
+    color: var(--evalpro-color-red);
+    padding: 8px 12px;
+}
+
+.btnPrimary:hover,
+.btnPrimary:focus,
+.btnPrimary:focus-visible {
+    background-color: var(--evalpro-color-red);
+    color: #fff;
+    outline: none;
+}
+
+/* INPUT & LABEL */
+.input {
+    border: 2px solid var(--evalpro-color-grey);
+    border-radius: var(--evalpro-border-radius-s);
+    color: #000;
+    padding: 8px 12px;
+}
+
+.input:focus,
+.input:focus-visible {
+    border-color: var(--evalpro-color-grey-dark);
+    outline: none;
+}
+
+.label {margin-bottom: 15px;}
+
+/* SELECT */
+
+.selectWrapper select {
+    border: 2px solid var(--evalpro-color-grey);
+    border-radius: var(--evalpro-border-radius-s);
+    color: #000;
+    padding: 8px 12px;
+    background-color: #fff;
+}
+.selectWrapper select option { width: 100%; }
+
+/* CONATINER */
+
+.container { padding: 50px; }
