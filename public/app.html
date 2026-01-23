@@ -7,6 +7,7 @@
      <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<<<<<<< HEAD
  <div class="header">
   <div class="headerLeft">
     <div class="logoWrapper">
@@ -24,36 +25,28 @@
 </div>
 
   
+=======
+  <div class="header">
+    <div class="headerLeft">
+      <div class="logoWrapper">
+        <img src="assets/logo.svg" alt="Stadt Regensburg Logo" />
+      </div>
+      <div class="schuelerWrapper">
+        <p>Schüler Name oder Ausschuss</p>
+      </div>
+    </div>
+    <button class="headerRight" onClick="loadPage('dashboard/dashboard')"  href="/pages/dashboard/uebersicht.html">
+      <img src="assets/house.svg" height="40px" width="40px" alt="Dashbord" />
+    </button>
+  </div>
+
+>>>>>>> frontend_aurelia
   <main id="content"></main>
 
+  <script src="script.js"></script>
   <script>
-    let currentScript = null;
-
-    function loadPage(page) {
-      fetch(`/pages/${page}/${page}.html`)
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("content").innerHTML = html;
-          loadPageScript(page);
-        })
-        .catch(err => console.error("Fehler beim Laden:", err));
-    }
-
-    function loadPageScript(page) {
-      if (currentScript) {
-        currentScript.remove();
-      }
-
-      currentScript = document.createElement("script");
-      currentScript.src = `/pages/${page}/script.js`;
-      currentScript.defer = true;
-      console.log(currentScript);
-      
-      document.body.appendChild(currentScript);
-    }
-
     // Startseite
-    loadPage("dashboard");
+    loadPage("dashboard/dashboard");
   </script>
 </body>
 </html>

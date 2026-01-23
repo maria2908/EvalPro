@@ -15,6 +15,8 @@
   font-family: "Segoe UI", Arial, sans-serif;
 }
 
+button { cursor: pointer; }
+
 /* HEADLINE */
 h1 {
     font-weight: 700;
@@ -45,14 +47,20 @@ h2 {
   box-sizing: border-box;
 }
 
-/* LEFT PART */
+
 .headerLeft {
   display: flex;
   align-items: center;
   gap: 18px;
 }
 
-/* LOGO BLOCK */
+.schuelerWrapper {
+  position: relative;
+  color: #fff;
+  font-size: 22px;
+  top: 35px;
+}
+
 .headerLeft .logoWrapper {
     height: 100%;
     display: flex;
@@ -75,21 +83,20 @@ h2 {
   background-color: transparent;
   border: 2px solid #fff;
   border-radius: var(--evalpro-border-radius-s);
-  width: 44px;                  /* ✅ smaller */
-  height: 44px;                 /* ✅ smaller */
+  width: 44px;                  
+  height: 44px;                 
   padding: 0;
   cursor: pointer;
   transition: 0.2s;
 }
 
 .headerLeft .homeWrapper img {
-  width: 22px;                  /* ✅ smaller icon */
+  width: 22px;                 
   height: 22px;
   filter: brightness(0) saturate(100%) invert(99%) sepia(0%) saturate(0%)
     hue-rotate(326deg) brightness(115%) contrast(101%);
 }
 
-/* Hover */
 .homeWrapper:hover,
 .homeWrapper:focus {
   background-color: #fff;
@@ -101,10 +108,9 @@ h2 {
     hue-rotate(349deg) brightness(93%) contrast(111%);
 }
 
-/* RIGHT TEXT */
 .headerRight {
   color: #fff;
-  font-size: 16px;              /* ✅ smaller */
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -196,6 +202,30 @@ h2 {
 }
 .selectWrapper select option { width: 100%; }
 
-/* CONATINER */
+/* CONTAINER */
 
-.container { padding: 50px; }
+.container {
+  width: 1120px;
+  margin: 0 auto;
+  padding: 50px 25px;
+  box-sizing: border-box;
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 1024px) {
+  .container {
+    width: 800px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 400px;
+  }
+}
