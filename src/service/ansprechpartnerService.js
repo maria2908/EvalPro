@@ -54,6 +54,35 @@ function selectAnsprechpartnerById(id) {
   });
 }
 
+function updateAnsprechpartner(id, data) {
+  const sql = `
+    UPDATE ansprechpartner
+    SET name = ?,
+        vorname = ?,
+        tel = ?
+    WHERE ID = ?
+  `;
+
+  return new Promise((resolve, reject) => {
+    db.run(
+      sql,
+      [
+        data.name,
+        data.vorname,
+        data.tel,
+        id
+      ],
+      function (err) {
+        if (err) {
+          console.error('Update Ansprechpartner error:', err.message);
+          return reject(err);
+        }
+        resolve(this.changes > 0);
+      }
+    );
+  });
+}
+
 
 /**
  * Delete one Ansprechpartner by ID
@@ -80,5 +109,6 @@ function removeAnsprechpartnerById(id) {
 module.exports = {
   insertAnsprechpartner,
   selectAnsprechpartnerById,
+  updateAnsprechpartner,
   removeAnsprechpartnerById
  };

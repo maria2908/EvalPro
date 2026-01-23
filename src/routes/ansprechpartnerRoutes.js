@@ -8,6 +8,7 @@ const router = express.Router();
 const { 
     addAnsprechpartner,
     getAnsprechpartnerById,
+    updateAnsprechpartnerById,
     deleteAnsprechpartnerById
  } = require('../controllers/ansprechpartnerController');
 
@@ -26,6 +27,9 @@ router.post('/add', addAnsprechpartner);
 
 // GET per ID
 router.get('/id/:id', getAnsprechpartnerById);
+
+// Update per ID
+router.post('/update/id/:id', updateAnsprechpartnerById)
 
 // Delete per ID
 router.get('/delete/id/:id', deleteAnsprechpartnerById);
