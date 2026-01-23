@@ -9,7 +9,9 @@ const {
   addPruefungsausschuss,
   getListPruefungsausschusse,
   getPruefungsausschussById,
-  getPruefungsausschussByName
+  getPruefungsausschussByName,
+  updatePruefungsausschussById,
+  deletePruefungsausschussById
 } = require('../controllers/pruefungsausschussController');
 
 /**
@@ -32,6 +34,12 @@ router.get('/id/:id', getPruefungsausschussById);
 
 // GET per Bezeichnung
 router.get('/by-name/:bezeichnung', getPruefungsausschussByName);
+
+// Update per ID
+router.post('/update/id/:id', updatePruefungsausschussById);
+
+// Delete per ID
+router.get('/delete/id/:id', deletePruefungsausschussById);
 
 // Router für die Verwendung in der App exportieren
 module.exports = router;

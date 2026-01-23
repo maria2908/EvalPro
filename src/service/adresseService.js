@@ -56,7 +56,31 @@ function selectAdresseById(id) {
   });
 }
 
+/**
+ * Delete one Adresse by ID
+ * @param {number} id
+ * @returns {Promise<boolean>} Returns true if deleted, false if not found
+ */
+function removeAdresseById(id) {
+  const sql = `DELETE FROM adresse WHERE ID = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.run(sql, [id], function(err) {
+      if (err) {
+        console.error('Delete Adresse by ID error:', err.message);
+        return reject(err);
+      }
+      resolve(this.changes > 0);
+    });
+  });
+}
+
+// function updateAdresse(id) {
+//   const sql;
+// }
+
 module.exports = { 
   insertAdresse,
-  selectAdresseById
+  selectAdresseById,
+  removeAdresseById
 };

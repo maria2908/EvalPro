@@ -3,7 +3,9 @@ const {
   insertPruefungsausschuss,
   selectAllPruefungsausschuss,
   selectPruefungsausschussById,
-  selectPruefungsausschussByBezeichnung
+  selectPruefungsausschussByBezeichnung,
+  updatePruefungsausschuss,
+  removePruefungsausschussById
 } = require('../service/pruefungsausschussService');
 
 /**
@@ -99,4 +101,95 @@ async function getPruefungsausschussByName(req, res) {
   }
 }
 
-module.exports = { addPruefungsausschuss, getListPruefungsausschusse, getPruefungsausschussById, getPruefungsausschussByName };
+async function updatePruefungsausschussById(req, res) {
+  try {
+    const { id } = req.params;
+    const { bezeichnung, ausbildungsberuf, pruefungstage } = req.body;
+
+    if (!bezeichnung || !ausbildungsberuf || !pruefungstage) {
+      return res.status(400).json({
+        error: 'Missing required Pruefungsausschuss fields'
+      });
+    }
+
+    const existing = await selectPruefungsausschussById(id);
+
+    if (!existing) {
+      return res.status(404).json({
+        error: 'Pruefungsausschuss not found'
+      });
+    }
+
+    const hasChanges =
+      existing.bezeichnung !== bezeichnung ||
+      existing.ausbildungsberuf !== ausbildungsberuf ||
+      existing.pruefungstage !== pruefungstage;
+
+    if (!hasChanges) {
+      return res.status(200).json({
+        message: 'No changes detected'
+      });
+    }
+
+    await updatePruefungsausschuss(id, {
+      bezeichnung,
+      ausbildungsberuf,
+      pruefungstage
+    });
+
+    res.status(200).json({
+      message: 'Pruefungsausschuss successfully updated'
+    });
+
+  } catch (err) {
+    console.error('Error updating Pruefungsausschuss:', err);
+    res.status(500).json({
+      error: 'Database update failed',
+      details: err.message
+    });
+  }
+}
+
+async function deletePruefungsausschussById(req, res) {
+  try {
+    const { id } = req.params;
+
+    // check if data exists
+    const existing = await selectPruefungsausschussById(id);
+    if (!existing) {
+      return res.status(404).json({
+        error: 'Pruefungsausschuss not found'
+      });
+    }
+
+    // Delete
+    const deleted = await removePruefungsausschussById(id);
+
+    if (deleted) {
+      res.status(200).json({
+        message: 'Pruefungsausschuss erfolgreich gelöscht',
+        id: id
+      });
+    } else {
+      res.status(500).json({
+        error: 'Löschen fehlgeschlagen'
+      });
+    }
+  } catch (err) {
+    console.error('Error deleting Pruefungsausschuss by ID:', err);
+    res.status(500).json({
+      error: 'Database delete failed',
+      details: err.message
+    });
+  }
+}
+
+
+module.exports = { 
+  addPruefungsausschuss,
+  getListPruefungsausschusse,
+  getPruefungsausschussById,
+  getPruefungsausschussByName,
+  updatePruefungsausschussById,
+  deletePruefungsausschussById
+ };

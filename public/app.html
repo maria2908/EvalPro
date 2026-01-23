@@ -7,55 +7,28 @@
      <link rel="stylesheet" href="style.css">
 </head>
 <body>
-        <nav class="sidebar">
-   <div class="sidebar-header">
-  <div class="logo-wrapper">
-    <img src="assets/logo.svg" alt="Stadt Regensburg Logo" />
+  <div class="header">
+    <div class="headerLeft">
+      <div class="logoWrapper">
+        <img src="assets/logo.svg" alt="Stadt Regensburg Logo" />
+      </div>
+        <div class="schuelerWrapper">
+          <p>Schüler Name oder Ausschuss</p>
+        </div>
+    </div>
+    <div class="headerRight">
+      <button class="homeWrapper" onClick="loadPage('dashboard/dashboard')"  href="/pages/dashboard/uebersicht.html">
+        <img src="assets/house.svg" height="40px" width="40px" alt="Dashbord" />
+      </button>
+    </div>
   </div>
-</div>
-    <nav>
-      <ul class="menu">
-        <li>
-          <a href="/pruefungsausschuss">Prüfungsausschuss verwalten</a>
-        </li>
+  
+  <main id="content"></main>
 
-        <li class="has-submenu">
-          <span>Projektdokumentation bewerten</span>
-          <ul class="submenu">
-            <li><a href="#">Punkte & Kommentare erfassen</a></li>
-            <li><a href="#">Fragen für Fachgespräch & Ergebnis</a></li>
-          </ul>
-        </li>
-
-        <li><a href="#">Projektpräsentation bewerten</a></li>
-        <li><a href="#">Fachgespräch</a></li>
-        <li><a href="#">Gesamtergebnis berechnen</a></li>
-        <li><a href="#">Mündliche Ergänzungsprüfung</a></li>
-        <li><a href="#">Datenverwaltung</a></li>
-      </ul>
-    </nav>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('ansprechpartnerForm');
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(form));
-
-        try {
-            const res = await fetch('/api/ansprechpartner', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-            const result = await res.json();
-            alert(JSON.stringify(result));
-        } catch (err) {
-            alert('Fehler beim Senden: ' + err.message);
-        }
-    });
-});
-
-</script>
+  <script src="script.js"></script>
+  <script>
+    // Startseite
+    loadPage("dashboard/dashboard");
+  </script>
 </body>
 </html>

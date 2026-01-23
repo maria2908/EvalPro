@@ -78,6 +78,41 @@ function selectPruefungsausschussById(id) {
 }
 
 /**
+ * Update Pruefungsausschuss (nur wenn Änderungen vorliegen)
+ * @param {number} id
+ * @param {Object} data
+ * @returns {Promise<boolean>} true = updated, false = no changes
+ */
+function updatePruefungsausschuss(id, data) {
+  const sql = `
+    UPDATE pruefungsausschuss
+    SET bezeichnung = ?,
+        ausbildungsberuf = ?,
+        pruefungstage = ?
+    WHERE ID = ?
+  `;
+
+  return new Promise((resolve, reject) => {
+    db.run(
+      sql,
+      [
+        data.bezeichnung,
+        data.ausbildungsberuf,
+        data.pruefungstage,
+        id
+      ],
+      function (err) {
+        if (err) {
+          console.error('Update Pruefungsausschuss error:', err.message);
+          return reject(err);
+        }
+        resolve(this.changes > 0);
+      }
+    );
+  });
+}
+
+/**
  * Get one Pruefungsausschuss by bezeichnung
  * @param {string} bezeichnung
  * @returns {Promise<Object|null>}
@@ -96,10 +131,33 @@ function selectPruefungsausschussByBezeichnung(bezeichnung) {
   });
 }
 
+/**
+ * Delete one Pruefungsausschuss by ID
+ * @param {number} id
+ * @returns {Promise<boolean>} Returns true if deleted, false if not found
+ */
+function removePruefungsausschussById(id) {
+  const sql = `DELETE FROM pruefungsausschuss WHERE ID = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.run(sql, [id], function(err) {
+      if (err) {
+        console.error('Delete Pruefungsausschuss by ID error:', err.message);
+        return reject(err);
+      }
+      // this.changes gibt die Anzahl der betroffenen Zeilen zurück
+      resolve(this.changes > 0);
+    });
+  });
+}
+
+
 
 module.exports = { 
   insertPruefungsausschuss,
   selectAllPruefungsausschuss,
   selectPruefungsausschussById,
-  selectPruefungsausschussByBezeichnung
+  selectPruefungsausschussByBezeichnung,
+  updatePruefungsausschuss,
+  removePruefungsausschussById
 };
