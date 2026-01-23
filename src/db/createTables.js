@@ -27,14 +27,6 @@ function createTables(db) {
                     tel TEXT
                 );
 
-                CREATE TABLE adresse (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    strasse TEXT NOT NULL,
-                    hausnummer TEXT NOT NULL,
-                    PLZ TEXT NOT NULL,
-                    stadt TEXT NOT NULL
-                );
-
                 CREATE TABLE pruefungsausschuss (
                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
                     bezeichnung TEXT NOT NULL,
@@ -66,13 +58,12 @@ function createTables(db) {
                     name TEXT NOT NULL,
                     vorname TEXT NOT NULL,
                     ausbildungsbetrieb TEXT NOT NULL,
-                    adress_id INTEGER NOT NULL,
+                    thema TEXT NOT NULL,
                     ansprechpartner_id INTEGER NOT NULL,
                     pruefungsausschuss_id INTEGER NOT NULL,
                     muendliche_zusatz_id INTEGER,
                     schriftliche_teil_1 INTEGER,
                     schriftliche_teil_2_id INTEGER,
-                    FOREIGN KEY (adress_id) REFERENCES adresse(ID),
                     FOREIGN KEY (ansprechpartner_id) REFERENCES ansprechpartner(ID),
                     FOREIGN KEY (pruefungsausschuss_id) REFERENCES pruefungsausschuss(ID),
                     FOREIGN KEY (muendliche_zusatz_id) REFERENCES muendliche_zasatzpruefung(ID),
@@ -169,7 +160,6 @@ function createTables(db) {
                 -- =========================
                 -- INDIZES für Performance
                 -- =========================
-                CREATE INDEX idx_schueler_adresse ON schueler(adress_id);
                 CREATE INDEX idx_schueler_ansprechpartner ON schueler(ansprechpartner_id);
                 CREATE INDEX idx_schueler_pruefungsausschuss ON schueler(pruefungsausschuss_id);
                 CREATE INDEX idx_schueler_schriftliche_teil_2 ON schueler(schriftliche_teil_2_id);

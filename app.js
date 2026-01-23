@@ -6,7 +6,6 @@ const ansprechpartnerRoutes = require('./src/routes/ansprechpartnerRoutes');
 const schuellerRoutes = require('./src/routes/schuellerRoutes');
 const pruefungsausschussRoutes = require('./src/routes/pruefungsausschussRoutes');
 const muendliche_ZusatzpruefungRoutes = require('./src/routes/muendliche_ZusatzpruefungRoutes');
-const adresseRoutes = require('./src/routes/adresseRoutes');
 
 
 
@@ -32,7 +31,6 @@ async function startApp() {
     app.use('/api/pruefungsausschuss', pruefungsausschussRoutes);
     app.use('/api/schueler', schuellerRoutes);
     app.use('/api/muendliche_Zusatzpruefung', muendliche_ZusatzpruefungRoutes);
-    app.use('/api/adresse', adresseRoutes);
 
 
 
