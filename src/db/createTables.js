@@ -1,142 +1,190 @@
+/**
+ * Erstellt alle benötigten Tabellen in der SQLite-Datenbank
+ * Die Tabellen werden in einer Transaktion angelegt,
+ * sodass bei einem Fehler alles zurückgerollt wird.
+ *
+ * @param {Object} db - SQLite-Datenbankverbindung
+ * @returns {Promise<void>}
+ */
 function createTables(db) {
     return new Promise((resolve, reject) => {
 
-        const schema = `
-            BEGIN TRANSACTION;
+            // SQL-Schema mit allen Tabellen
+            const schema = `
 
-            -- =========================
-            -- BASIS-TABELLEN
-            -- =========================
+                -- Startet eine Transaktion
+                BEGIN TRANSACTION;
 
-            CREATE TABLE adresse (
-                ID INTEGER PRIMARY KEY,
-                strasse TEXT NOT NULL,
-                hausnummer TEXT,
-                PLZ TEXT,
-                stadt TEXT
-            );
+                -- =========================
+                -- BASIS-TABELLEN
+                -- =========================
 
-            CREATE TABLE ansprechpartner (
-                ID INTEGER PRIMARY KEY,
-                name TEXT NOT NULL,
-                vorname TEXT NOT NULL,
-                tel TEXT
-            );
+                -- Unabhängige Tabellen (keine Fremdschlüssel)
+                CREATE TABLE ansprechpartner (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    vorname TEXT NOT NULL,
+                    tel TEXT
+                );
 
-            CREATE TABLE pruefungsausschuss (
-                ID INTEGER PRIMARY KEY,
-                bezeichnung TEXT NOT NULL,
-                ausbildungsberuf TEXT,
-                pruefungstage TEXT
-            );
+                CREATE TABLE pruefungsausschuss (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    bezeichnung TEXT NOT NULL,
+                    ausbildungsberuf TEXT NOT NULL,
+                    pruefungstag TEXT NOT NULL
+                );
 
-            -- =========================
-            -- SCHUELER (AGGREGATE ROOT)
-            -- =========================
+                -- =========================
+                -- PRÜFUNGS-TABELLEN
+                -- =========================
+                CREATE TABLE muendliche_zasatzpruefung (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    pruefungsbereich TEXT NOT NULL,
+                    punkte INTEGER NOT NULL
+                );
 
-            CREATE TABLE schueler (
-                ID INTEGER PRIMARY KEY,
-                name TEXT NOT NULL,
-                vorname TEXT NOT NULL,
-                ausbildungsbetrieb TEXT,
+                CREATE TABLE schriftliche_teil_2 (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    GA1_punkte INTEGER,
+                    GA2_punkte INTEGER,
+                    GA3_punkte INTEGER
+                );
 
-                address_id INTEGER,
-                ansprechpartner_id INTEGER,
-                pruefungsausschuss_id INTEGER,
+                -- =========================
+                -- SCHUELER (Zentrale Tabelle)
+                -- =========================
+                CREATE TABLE schueler (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    vorname TEXT NOT NULL,
+                    ausbildungsbetrieb TEXT NOT NULL,
+                    thema TEXT NOT NULL,
+                    ansprechpartner_id INTEGER NOT NULL,
+                    pruefungsausschuss_id INTEGER NOT NULL,
+                    muendliche_zusatz_id INTEGER,
+                    schriftliche_teil_1 INTEGER,
+                    schriftliche_teil_2_id INTEGER,
+                    FOREIGN KEY (ansprechpartner_id) REFERENCES ansprechpartner(ID),
+                    FOREIGN KEY (pruefungsausschuss_id) REFERENCES pruefungsausschuss(ID),
+                    FOREIGN KEY (muendliche_zusatz_id) REFERENCES muendliche_zasatzpruefung(ID),
+                    FOREIGN KEY (schriftliche_teil_2_id) REFERENCES schriftliche_teil_2(ID)
+                );
 
-                AP1_punkte INTEGER,
-                AP2GA1_punkte INTEGER,
-                AP2GA2_punkte INTEGER,
-                AP2GA3_punkte INTEGER,
+                -- =========================
+                -- BEWERTUNGS-SYSTEM
+                -- =========================
+                CREATE TABLE bewertungsteil (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    bezeichnung TEXT NOT NULL
+                );
 
-                FOREIGN KEY (address_id) REFERENCES adresse(ID),
-                FOREIGN KEY (ansprechpartner_id) REFERENCES ansprechpartner(ID),
-                FOREIGN KEY (pruefungsausschuss_id) REFERENCES pruefungsausschuss(ID)
-            );
+                CREATE TABLE bewertungskriterium (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    bewertungsteil_id INTEGER NOT NULL,
+                    bewertungskriterium TEXT NOT NULL,
+                    gewichtung INTEGER NOT NULL,
+                    FOREIGN KEY (bewertungsteil_id) REFERENCES bewertungsteil(ID) ON DELETE CASCADE
+                );
 
-            -- =========================
-            -- BEWERTUNGS-TABELLEN
-            -- =========================
+                -- =========================
+                -- BEWERTUNGS-TABELLEN (mit CASCADE)
+                -- =========================
+                CREATE TABLE doku_bewertung (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    kriterium_id INTEGER NOT NULL,
+                    doku_id INTEGER NOT NULL,
+                    punkte INTEGER NOT NULL,
+                    komentar TEXT,
+                    FOREIGN KEY (kriterium_id) REFERENCES bewertungskriterium(ID) ON DELETE CASCADE,
+                    FOREIGN KEY (doku_id) REFERENCES dokumentation(ID) ON DELETE CASCADE
+                );
 
-            CREATE TABLE bewertungskriterium (
-                ID INTEGER PRIMARY KEY,
-                schueler_id INTEGER NOT NULL,
-                bewertungsteil TEXT NOT NULL,
-                bewertungskriterium TEXT NOT NULL,
-                punkte INTEGER,
-                kommentare TEXT,
+                CREATE TABLE praes_bewertung (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    kriterium_id INTEGER NOT NULL,
+                    praes_id INTEGER NOT NULL,
+                    punkte INTEGER NOT NULL,
+                    komentar TEXT,
+                    FOREIGN KEY (kriterium_id) REFERENCES bewertungskriterium(ID) ON DELETE CASCADE,
+                    FOREIGN KEY (praes_id) REFERENCES praesentation(ID) ON DELETE CASCADE
+                );
 
-                FOREIGN KEY (schueler_id)
-                    REFERENCES schueler(ID)
-                    ON DELETE CASCADE
-            );
+                CREATE TABLE fach_bewertung (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    kriterium_id INTEGER NOT NULL,
+                    fach_id INTEGER NOT NULL,
+                    punkte INTEGER NOT NULL,
+                    komentar TEXT,
+                    FOREIGN KEY (kriterium_id) REFERENCES bewertungskriterium(ID) ON DELETE CASCADE,
+                    FOREIGN KEY (fach_id) REFERENCES fachgeschpraech(ID) ON DELETE CASCADE
+                );
 
-            CREATE TABLE dokumentation (
-                ID INTEGER PRIMARY KEY,
-                schueler_id INTEGER NOT NULL,
-                gesamtpunkte INTEGER,
+                -- =========================
+                -- SCHÜLER-ABHÄNGIGE TABELLEN (mit CASCADE)
+                -- =========================
+                CREATE TABLE dokumentation (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    schueler_id INTEGER NOT NULL,
+                    FOREIGN KEY (schueler_id) REFERENCES schueler(ID) ON DELETE CASCADE
+                );
 
-                FOREIGN KEY (schueler_id)
-                    REFERENCES schueler(ID)
-                    ON DELETE CASCADE
-            );
+                CREATE TABLE praesentation (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    schueler_id INTEGER NOT NULL,
+                    FOREIGN KEY (schueler_id) REFERENCES schueler(ID) ON DELETE CASCADE
+                );
 
-            CREATE TABLE fachgespraech (
-                ID INTEGER PRIMARY KEY,
-                schueler_id INTEGER NOT NULL,
-                gesamtpunkte INTEGER,
+                CREATE TABLE fachgeschpraech (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    schueler_id INTEGER NOT NULL,
+                    FOREIGN KEY (schueler_id) REFERENCES schueler(ID) ON DELETE CASCADE
+                );
 
-                FOREIGN KEY (schueler_id)
-                    REFERENCES schueler(ID)
-                    ON DELETE CASCADE
-            );
+                -- =========================
+                -- FRAGEN-SYSTEM (mit CASCADE)
+                -- =========================
+                CREATE TABLE fragen (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    text TEXT NOT NULL
+                );
 
-            CREATE TABLE praesentation (
-                ID INTEGER PRIMARY KEY,
-                schueler_id INTEGER NOT NULL,
-                gesamtpunkte INTEGER,
+                CREATE TABLE fach_fragen (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    fragen_id INTEGER NOT NULL,
+                    fach_id INTEGER NOT NULL,
+                    kommmentar TEXT,
+                    FOREIGN KEY (fragen_id) REFERENCES fragen(ID) ON DELETE CASCADE,
+                    FOREIGN KEY (fach_id) REFERENCES fachgeschpraech(ID) ON DELETE CASCADE
+                );
 
-                FOREIGN KEY (schueler_id)
-                    REFERENCES schueler(ID)
-                    ON DELETE CASCADE
-            );
+                -- =========================
+                -- INDIZES für Performance
+                -- =========================
+                CREATE INDEX idx_schueler_ansprechpartner ON schueler(ansprechpartner_id);
+                CREATE INDEX idx_schueler_pruefungsausschuss ON schueler(pruefungsausschuss_id);
+                CREATE INDEX idx_schueler_schriftliche_teil_2 ON schueler(schriftliche_teil_2_id);
+                CREATE INDEX idx_dokumentation_schueler ON dokumentation(schueler_id);
+                CREATE INDEX idx_praesentation_schueler ON praesentation(schueler_id);
+                CREATE INDEX idx_fachgeschpraech_schueler ON fachgeschpraech(schueler_id);
+                CREATE INDEX idx_doku_bewertung_doku ON doku_bewertung(doku_id);
+                CREATE INDEX idx_praes_bewertung_praes ON praes_bewertung(praes_id);
+                CREATE INDEX idx_fach_bewertung_fach ON fach_bewertung(fach_id);
 
-            CREATE TABLE muendliche_Zusatzpruefung (
-                ID INTEGER PRIMARY KEY,
-                schueler_id INTEGER NOT NULL,
-                pruefungsbereich TEXT,
-                punktzahl INTEGER,
+                COMMIT;
+            `;
 
-                FOREIGN KEY (schueler_id)
-                    REFERENCES schueler(ID)
-                    ON DELETE CASCADE
-            );
-
-            -- =========================
-            -- TRIGGER: Löscht Adresse & Ansprechpartner
-            -- wenn Schüler gelöscht wird
-            -- =========================
-
-            CREATE TRIGGER delete_schueler_dependencies
-            AFTER DELETE ON schueler
-            BEGIN
-                DELETE FROM adresse WHERE ID = OLD.address_id;
-                DELETE FROM ansprechpartner WHERE ID = OLD.ansprechpartner_id;
-            END;
-
-            COMMIT;
-        `;
-
-        db.exec(schema, (err) => {
-            if (err) {
-                console.error('❌ Error creating tables:', err.message);
-                reject(err);
-            } else {
-                console.log('✅ Tables created successfully!');
-                resolve();
-            }
-        });
+            // Führt das gesamte SQL-Schema aus
+            db.exec(schema, (err) => {
+                if (err) {
+                    console.error('Error creating tables:', err.message);
+                    reject(err);
+                } else {
+                    console.log('Tables created successfully!');
+                    resolve();
+                }
+            });
     });
 }
 
+// Exportiert die Funktion für die Datenbankinitialisierung
 module.exports = createTables;

@@ -9,7 +9,6 @@ const {
   addSchueler,
   getListSchuelers,
   getSchuelerByName,
-  getSchuelerAdresse,
   getSchuelerById,
   deleteSchuelerById
 } = require('../controllers/schuelerController');
@@ -35,9 +34,6 @@ router.get('/id/:id', getSchuelerById);
 
 // GET per Name  /api/schueler/by-name/hauck
 router.get('/by-name/:name', getSchuelerByName);
-
-// GET adresse per ID /api/schueler/id/1/adresse
-router.get('/id/:id/adresse', getSchuelerAdresse);
 
 // DELETE Schueler per ID /api/schueler/delete/id/:id
 router.get('/delete/id/:id', deleteSchuelerById);
