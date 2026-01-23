@@ -211,6 +211,13 @@ h2 {
   box-sizing: border-box;
 }
 
+.containerSmall {
+  width: 920px;
+  margin: 0 auto;
+  padding: 50px 25px;
+  box-sizing: border-box;
+}
+
 /* Responsive Anpassungen */
 @media (max-width: 1024px) {
   .container {
@@ -228,4 +235,11 @@ h2 {
   .container {
     width: 400px;
   }
+}
+
+.border {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid var(--evalpro-color-grey);
+  border-radius: var(--evalpro-border-radius-m);
 }

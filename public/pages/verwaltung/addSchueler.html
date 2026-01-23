@@ -8,9 +8,9 @@
         <title>Schüler anlegen | EvalPro</title>
     </head>
     <body>
-        <div class="container schuelerFormWrapper">
+        <div class="containerSmall schuelerFormWrapper">
             <h1>Schüler anlegen</h1>
-            <form id="schuelerForm" onsubmit="saveSchueler(event)">
+            <form id="schuelerForm" class="border">
 
                 <div class="selectWrapper" style="margin-bottom: 25px;">
                     <label for="pruefungsausschuss_id" class="label">Prüfungsauschuss auswählen:</label>
@@ -30,25 +30,10 @@
                         <input type="text" required class="input" name="name" />
                     </div>
                 </div>
-                <div class="row">
-                    <div class="inputWrapper">
-                        <label for="strasse" class="label">Straße:</label>
-                        <input type="text" class="input" name="strasse" />
-                    </div>
-                    <div class="inputWrapper">
-                        <label for="hausnummer" class="label">Hausnummer:</label>
-                        <input type="text" class="input" name="hausnummer" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="inputWrapper">
-                        <label for="plz" class="label">Postleizahl:</label>
-                        <input type="text" class="input" name="plz" />
-                    </div>
-                    <div class="inputWrapper">
-                        <label for="ort" class="label">Ort:</label>
-                        <input type="text" class="input" name="ort" />
-                    </div>
+
+                <div class="inputWrapper">
+                    <label for="thema" class="label">Projektthema:</label>
+                    <input type="text" required class="input" name="thema" />
                 </div>
 
                 <h2 style="margin-top: 25px;">Ausbildungsbetrieb</h2>
@@ -58,7 +43,7 @@
                         <input type="text" class="input" name="betrieb" />
                     </div>
                     <div class="inputWrapper">
-                        <label for="telefon" class="label">Telefon:</label>
+                        <label for="telefon" class="label">Telefon (Ansprechpartner):</label>
                         <input type="text" class="input" name="telefon" />
                     </div>
                 </div>

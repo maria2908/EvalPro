@@ -1,7 +1,12 @@
 function initVerwaltung() {
-    saveSchueler();
-    loadPruefungsausschuesse();
-    savePruefungsausschuss();
+    if (document.getElementById('schuelerForm')) {
+        loadPruefungsausschuesse();
+        saveSchueler();
+    }
+
+    if (document.getElementById('pruefungsausschussForm')) {
+        savePruefungsausschuss();
+    }
 }
 
 initVerwaltung();
@@ -22,15 +27,14 @@ function savePruefungsausschuss() {
                 body: JSON.stringify(data),
             });
             const result = await res.json();
-            console.log(result);
             alert(JSON.stringify(result));
-            
+
+            loadPage("dashboard/dashboard");
+        
         } catch (err) {
             alert('Fehler beim Senden: ' + err.message);
         }
     });
-
-    loadPage("dashboard/dashboard");
 }
 
 /* PRÜFUNGSAUSSCHUSS AUSGEBEN */
@@ -46,7 +50,6 @@ async function loadPruefungsausschuesse() {
         data.forEach(pa => {
             const option = document.createElement('option');
             option.value = pa.ID;
-            console.log(option);
             
             option.textContent = pa.bezeichnung;
             select.appendChild(option);
@@ -65,38 +68,22 @@ function saveSchueler() {
         e.preventDefault();
     
         const formData = Object.fromEntries(new FormData(form));
-    
+
         try {
-            /* ADRESSE SPEICHERN */
-            const adresseRes = await fetch('/api/adresse/add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    strasse: formData.strasse,
-                    hausnummer: formData.hausnummer,
-                    plz: formData.plz,
-                    ort: formData.ort
-                })
-            });
-    
-            const adresseResult = await adresseRes.json();
-            const adresseId = adresseResult.id;
-    
             /* ANSPRECHPARTNER SPEICHERN */
             const ansprechpartnerRes = await fetch('/api/ansprechpartner/add', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                    name: formData.ausbilderNachname,
                     vorname: formData.ausbilderVorname,
-                    nachname: formData.ausbilderNachname,
-                    betrieb: formData.betrieb,
-                    telefon: formData.telefon
+                    tel: formData.telefon
                 })
             });
-    
             const ansprechpartnerResult = await ansprechpartnerRes.json();
             const ansprechpartnerId = ansprechpartnerResult.id;
-    
+
+
             /* SCHÜLER SPEICHERN */
             const schuelerRes = await fetch('/api/schueler/add', {
                 method: 'POST',
@@ -104,19 +91,20 @@ function saveSchueler() {
                 body: JSON.stringify({
                     name: formData.name,
                     vorname: formData.vorname,
-                    address: adresseId,
+                    thema: formData.thema,
+                    ausbildungsbetrieb: formData.betrieb,
                     ansprechpartner_id: ansprechpartnerId,
-                    pruefungsausschuss_id: formData.pruefungsausschuss_id || null
+                    pruefungsausschuss_id: Number(formData.pruefungsausschuss_id)
                 })
             });
+
+            console.log("schuelerRes: ", schuelerRes);
     
-            alert('Schüler erfolgreich gespeichert');
+            loadPage("dashboard/dashboard");
     
         } catch (err) {
             console.error(err);
             alert('Fehler beim Speichern');
         }
     });
-
-    loadPage("dashboard/dashboard");
 }

@@ -8,9 +8,9 @@
         <title>Prüfungsausschuss anlegen | EvalPro</title>
     </head>
     <body>
-        <div class="container aussschussWrapper" onsubmit="savePruefungsausschuss(event)">
+        <div class="container aussschussWrapper">
             <h1>Prüfungsausschuss anlegen</h1>
-            <form id="pruefungsausschussForm">
+            <form id="pruefungsausschussForm" class="border">
                 <div class="inputWrapper">
                     <label for="bezeichnung" class="label">Bezeichnung:</label>
                     <input type="text" class="input" name="bezeichnung" />
@@ -20,8 +20,8 @@
                     <input type="text" class="input" name="ausbildungsberuf" />
                 </div>
                 <div class="inputWrapper">
-                    <label for="pruefungstage" class="label">Prüfungstage:</label>
-                    <input type="text" class="input" name="pruefungstage" />
+                    <label for="pruefungstag" class="label">Prüfungstage:</label>
+                    <input type="text" class="input" name="pruefungstag" />
                 </div>
                 <div class="btnWrapper">
                     <button type="submit" class="btnDefault">speichern</button>

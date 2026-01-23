@@ -20,7 +20,6 @@ function loadPageScript(page) {
     currentScript = document.createElement("script");
     currentScript.src = `/pages/${page}/script.js`;
     currentScript.defer = true;
-    console.log(currentScript);
     
     document.body.appendChild(currentScript);
 }
