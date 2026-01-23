@@ -133,25 +133,40 @@ function selectPruefungsausschussByBezeichnung(bezeichnung) {
 
 /**
  * Delete one Pruefungsausschuss by ID
+ * Before deleting, set pruefungsausschuss_id = NULL for all students
  * @param {number} id
  * @returns {Promise<boolean>} Returns true if deleted, false if not found
  */
 function removePruefungsausschussById(id) {
-  const sql = `DELETE FROM pruefungsausschuss WHERE ID = ?`;
-
   return new Promise((resolve, reject) => {
-    db.run(sql, [id], function(err) {
-      if (err) {
-        console.error('Delete Pruefungsausschuss by ID error:', err.message);
-        return reject(err);
-      }
-      // this.changes gibt die Anzahl der betroffenen Zeilen zurück
-      resolve(this.changes > 0);
+    db.serialize(() => {
+      db.run(
+        `UPDATE schueler SET pruefungsausschuss_id = NULL WHERE pruefungsausschuss_id = ?`,
+        [id],
+        function (err) {
+          if (err) {
+            console.error('Error clearing FK in schueler:', err.message);
+            return reject(err);
+          }
+          console.log(`FKs cleared for ${this.changes} students`);
+
+          db.run(
+            `DELETE FROM pruefungsausschuss WHERE ID = ?`,
+            [id],
+            function (err) {
+              if (err) {
+                console.error('Delete Pruefungsausschuss by ID error:', err.message);
+                return reject(err);
+              }
+              console.log(`Pruefungsausschuss deleted: ${this.changes > 0}`);
+              resolve(this.changes > 0);
+            }
+          );
+        }
+      );
     });
   });
 }
-
-
 
 module.exports = { 
   insertPruefungsausschuss,
