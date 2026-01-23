@@ -36,14 +36,22 @@ h2 {
   display: flex;
   min-height: 100vh;
 }
-
-/* HEADER */
 .header {
   background-color: var(--evalpro-color-red);
   width: 100%;
+  height: 61px;                 /* ✅ smaller fixed height */
   display: flex;
-  flex-direction: row;
+  align-items: center;          /* ✅ vertical center */
   justify-content: space-between;
+  padding-right: 30px;          /* ✅ spacing right */
+  box-sizing: border-box;
+}
+
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
 .schuelerWrapper {
@@ -53,40 +61,62 @@ h2 {
   top: 35px;
 }
 
-.headerLeft {
-  display: flex;
-  flex-direction: row;
-  gap: 25px;
-}
-
 .headerLeft .logoWrapper {
-  height: 100%;
-  background-color: #fff;
-  padding: 10px 30px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding:  28px;
+    border-radius: 0 0 63px 0;            
 }
 
-.headerRight {
-  position: relative;
+.headerLeft .logoWrapper img {
+  height: 45px;                 
+  width: auto;
+}
+
+/* HOME BUTTON */
+.headerLeft .homeWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: transparent;
   border: 2px solid #fff;
   border-radius: var(--evalpro-border-radius-s);
-  height: 75px;
-  padding: 15px;
-  top: 15px;
-  right: 50px;
+  width: 44px;                  
+  height: 44px;                 
+  padding: 0;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.headerRight:hover,
-.headerRight:focus {
+.headerLeft .homeWrapper img {
+  width: 22px;                 
+  height: 22px;
+  filter: brightness(0) saturate(100%) invert(99%) sepia(0%) saturate(0%)
+    hue-rotate(326deg) brightness(115%) contrast(101%);
+}
+
+.homeWrapper:hover,
+.homeWrapper:focus {
   background-color: #fff;
 }
 
-.headerRight:hover img,
-.headerRight:focus img {
-  filter: brightness(0) saturate(100%) invert(15%) sepia(56%) saturate(6285%) hue-rotate(349deg) brightness(93%) contrast(111%);
+.homeWrapper:hover img,
+.homeWrapper:focus img {
+  filter: brightness(0) saturate(100%) invert(15%) sepia(56%) saturate(6285%)
+    hue-rotate(349deg) brightness(93%) contrast(111%);
 }
 
-.headerRight img { filter: brightness(0) saturate(100%) invert(99%) sepia(0%) saturate(0%) hue-rotate(326deg) brightness(115%) contrast(101%) }
+.headerRight {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.headerRight p {
+  margin: 0;
+}
 
 /* CONTENT AREA */
 .content {
