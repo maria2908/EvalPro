@@ -8,6 +8,7 @@ const router = express.Router();
 const {
   addAdresse,
   getAdresseById,
+  updateAdresseById,
   deleteAdresseById
 } = require('../controllers/adresseController');
 
@@ -25,6 +26,9 @@ router.post('/add', addAdresse);
 
 // GET per ID
 router.get('/id/:id', getAdresseById);
+
+// Update per ID
+router.post('/update/id/:id', updateAdresseById)
 
 // Delete per ID
 router.get('/delete/id/:id', deleteAdresseById);

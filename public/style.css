@@ -1,3 +1,12 @@
+:root {
+    --evalpro-color-red: #E30613;
+    --evalpro-color-grey: #c1c1c1;
+    --evalpro-color-grey-dark: #5f6061;
+
+    --evalpro-border-radius-m: 15px;
+    --evalpro-border-radius-s: 6px;
+}
+
 /* RESET */
 * {
   margin: 0;
@@ -6,90 +15,107 @@
   font-family: "Segoe UI", Arial, sans-serif;
 }
 
+button { cursor: pointer; }
+
+/* HEADLINE */
+h1 {
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--evalpro-color-red);
+    margin-bottom: 30px;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
 /* LAYOUT */
 .layout {
   display: flex;
   min-height: 100vh;
 }
-
-/* SIDEBAR */
-.sidebar {
-  width: 260px;
-  background: #e30613;
-  color: white;
-  padding: 20px 0;
-}
-/* LOGO AREA */
-.sidebar-header {
+.header {
+  background-color: var(--evalpro-color-red);
+  width: 100%;
+  height: 61px;                 /* ✅ smaller fixed height */
   display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
+  align-items: center;          /* ✅ vertical center */
+  justify-content: space-between;
+  padding-right: 30px;          /* ✅ spacing right */
+  box-sizing: border-box;
 }
 
-.logo-wrapper {
-  background: white;
-    border-radius: 0 0 120px 120px;
-    padding: 58px;
-    margin-top: -21px;
-    width: 100%;
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.schuelerWrapper {
+  position: relative;
+  color: #fff;
+  font-size: 22px;
+  top: 35px;
+}
+
+.headerLeft .logoWrapper {
+    height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    background-color: #fff;
+    padding:  28px;
+    border-radius: 0 0 63px 0;            
 }
 
-.logo-wrapper img {
-  width: 100px;
-  height: auto;
+.headerLeft .logoWrapper img {
+  height: 45px;                 
+  width: auto;
 }
 
-
-/* MENU */
-.menu {
-  list-style: none;
-  margin-top: 30px;
-}
-
-.menu > li {
-  margin-bottom: 6px;
-}
-
-.menu a,
-.menu span {
-  display: block;
-  padding: 14px 20px;
-  color: white;
-  text-decoration: none;
+/* HOME BUTTON */
+.headerLeft .homeWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid #fff;
+  border-radius: var(--evalpro-border-radius-s);
+  width: 44px;                  
+  height: 44px;                 
+  padding: 0;
   cursor: pointer;
-  border-radius: 8px 0 0 8px;
+  transition: 0.2s;
 }
 
-.menu a:hover,
-.menu span:hover {
-  background: rgba(255, 255, 255, 0.15);
+.headerLeft .homeWrapper img {
+  width: 22px;                 
+  height: 22px;
+  filter: brightness(0) saturate(100%) invert(99%) sepia(0%) saturate(0%)
+    hue-rotate(326deg) brightness(115%) contrast(101%);
 }
 
-/* SUBMENU */
-.has-submenu > span::after {
-  content: "⌄";
-  float: right;
+.homeWrapper:hover,
+.homeWrapper:focus {
+  background-color: #fff;
 }
 
-.submenu {
-  list-style: none;
-  margin-left: 20px;
-  margin-top: 5px;
+.homeWrapper:hover img,
+.homeWrapper:focus img {
+  filter: brightness(0) saturate(100%) invert(15%) sepia(56%) saturate(6285%)
+    hue-rotate(349deg) brightness(93%) contrast(111%);
 }
 
-.submenu li a {
-  font-size: 14px;
-  padding: 10px 20px;
-  background: white;
-  color: #c90511;
-  border-radius:  0;
+.headerRight {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
 }
 
-.submenu li a:hover {
-  background: rgba(255, 255, 255, 0.2);
+.headerRight p {
+  margin: 0;
 }
 
 /* CONTENT AREA */
@@ -99,26 +125,6 @@
   background: #f8f8f8;
 }
 
-/* FORM (just light polish) */
-form input {
-  display: block;
-  margin-bottom: 10px;
-  padding: 10px;
-  width: 250px;
-}
-
-form button {
-  padding: 10px 20px;
-  background: #e30613;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-form button:hover {
-  background: #c90511;
-}
 .list-item {
   position: relative;
   padding: 12px 16px;
@@ -135,25 +141,9 @@ form button:hover {
 .list-item:hover .actions {
   display: block;
 }
-:root {
-    --evalpro-color-red: #E30613;
-    --evalpro-color-grey: #e5e5e5;
-    --evalpro-color-grey-dark: #5f6061;
-
-    --evalpro-border-radius-m: 15px;
-    --evalpro-border-radius-s: 6px;
-}
-
-* { font-family: Arial, Helvetica, sans-serif; }
-
-h1 {
-    font-weight: 600;
-    font-size: 28px;
-    color: var(--evalpro-color-red);
-}
 
 /* BUTTON */
-.button {
+.btnDefault {
     background-color: var(--evalpro-color-red);
     border: 2px solid var(--evalpro-color-red);
     border-radius: var(--evalpro-border-radius-s);
@@ -161,25 +151,81 @@ h1 {
     padding: 8px 12px;
 }
 
-.button:hover,
-.button:focus,
-.button:focus-visible {
+.btnDefault:hover,
+.btnDefault:focus,
+.btnDefault:focus-visible {
     background-color: transparent;
     color: var(--evalpro-color-red);
     outline: none;
 }
 
-/* INPUT */
+.btnPrimary {
+    background-color: #fff;
+    border: 2px solid var(--evalpro-color-red);
+    border-radius: var(--evalpro-border-radius-s);
+    color: var(--evalpro-color-red);
+    padding: 8px 12px;
+}
+
+.btnPrimary:hover,
+.btnPrimary:focus,
+.btnPrimary:focus-visible {
+    background-color: var(--evalpro-color-red);
+    color: #fff;
+    outline: none;
+}
+
+/* INPUT & LABEL */
 .input {
     border: 2px solid var(--evalpro-color-grey);
     border-radius: var(--evalpro-border-radius-s);
     color: #000;
-    padding: 8px 12px;
-
+    padding: 5px 12px;
 }
 
 .input:focus,
 .input:focus-visible {
     border-color: var(--evalpro-color-grey-dark);
     outline: none;
+}
+
+.label {margin-bottom: 15px;}
+
+/* SELECT */
+
+.selectWrapper select {
+    border: 2px solid var(--evalpro-color-grey);
+    border-radius: var(--evalpro-border-radius-s);
+    color: #000;
+    padding: 8px 12px;
+    background-color: #fff;
+}
+.selectWrapper select option { width: 100%; }
+
+/* CONTAINER */
+
+.container {
+  width: 1120px;
+  margin: 0 auto;
+  padding: 50px 25px;
+  box-sizing: border-box;
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 1024px) {
+  .container {
+    width: 800px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 400px;
+  }
 }

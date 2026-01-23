@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="pages/pruefungen/schriftlichePruefung/styles.css">
+    <title>schriftliche Prüfung | EvalPro</title>
+</head>
+<body>
+    <div class="container aussschussWrapper">
+        <h1>Punkte der schriftlichen Prüfung</h1>
+        <form id="schriftlichePruefungForm">
+            <h2>Abschlussprüfung Teil 1</h2>
+            <div class="inputWrapper">
+                <label for="bezeichnung" class="label">Einrichtung IT Arbeitsplatz:</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" placeholder="Punkte" class="input" name="bezeichnung" />
+            </div>
+            <h2>Abschlussprüfung Teil 2</h2>
+            <div class="inputWrapper">
+                <label for="ausbildungsberuf" class="label">Einführung IT-Lösung (GA 1):</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" class="input" placeholder="Punkte" name="ausbildungsberuf" />
+            </div>
+            <div class="inputWrapper">
+                <label for="pruefungstage" class="label">Kaufm. Unterstützungspr. (GA 2) :</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" class="input" placeholder="Punkte" name="pruefungstage" />
+            </div>
+            <div class="inputWrapper">
+                <label for="pruefungstage" class="label">Wiso (GA 3) :</label>
+                <input type="text" inputmode="decimal" pattern="^-?\d*\.?\d*$" class="input" placeholder="Punkte" name="pruefungstage" />
+            </div>
+            <div class="btnWrapper">
+                <button type="submit" class="btnDefault">speichern</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

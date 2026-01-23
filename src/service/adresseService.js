@@ -57,6 +57,43 @@ function selectAdresseById(id) {
 }
 
 /**
+ * Update Adresse (nur wenn Änderungen vorliegen)
+ * @param {number} id
+ * @param {Object} data
+ * @returns {Promise<boolean>} true = updated, false = no changes
+ */
+function updateAdresse(id, data) {
+  const sql = `
+    UPDATE adresse
+    SET strasse = ?,
+        hausnummer = ?,
+        PLZ = ?,
+        stadt = ?
+    WHERE ID = ?
+  `;
+
+  return new Promise((resolve, reject) => {
+    db.run(
+      sql,
+      [
+        data.strasse,
+        data.hausnummer,
+        data.plz,
+        data.stadt,
+        id
+      ],
+      function (err) {
+        if (err) {
+          console.error('Update Adresse error:', err.message);
+          return reject(err);
+        }
+        resolve(this.changes > 0);
+      }
+    );
+  });
+}
+
+/**
  * Delete one Adresse by ID
  * @param {number} id
  * @returns {Promise<boolean>} Returns true if deleted, false if not found
@@ -75,9 +112,9 @@ function removeAdresseById(id) {
   });
 }
 
-
 module.exports = { 
   insertAdresse,
   selectAdresseById,
+  updateAdresse,
   removeAdresseById
 };

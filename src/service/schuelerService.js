@@ -80,7 +80,7 @@ function selectSchuelerByName(name) {
 function selectSchuelerAdresse(schueler_id) {
   const sql = `SELECT a.strasse, a.hausnummer, a.plz, a.stadt 
                FROM schueler s, adresse a 
-               WHERE s.address = a.id and s.id = ?`;
+               WHERE s.address_id = a.id and s.id = ?`;
 
   return new Promise((resolve, reject) => {
     db.all(sql, [schueler_id], (err, rows) => {
@@ -110,10 +110,31 @@ function selectSchuelerById(id) {
   });
 }
 
+/**
+ * Delete one Schueler by ID
+ * @param {number} id
+ * @returns {Promise<boolean>} Returns true if deleted, false if not found
+ */
+function removeSchuelerById(id) {
+  const sql = `DELETE FROM schueler WHERE ID = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.run(sql, [id], function (err) {   // 👈 function, NICHT =>
+      if (err) {
+        console.error('Delete Schueler by ID error:', err.message);
+        return reject(err);
+      }
+
+      resolve(this.changes); // 👈 funktioniert jetzt
+    });
+  })
+}
+
 module.exports = {
   insertSchueler,
   selectSchuelers,
   selectSchuelerByName,
   selectSchuelerAdresse,
-  selectSchuelerById
+  selectSchuelerById,
+  removeSchuelerById
 };

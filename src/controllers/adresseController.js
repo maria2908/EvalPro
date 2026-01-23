@@ -2,6 +2,7 @@
 const { 
   insertAdresse,
   selectAdresseById,
+  updateAdresse,
   removeAdresseById
 } = require('../service/adresseService');
 
@@ -63,6 +64,58 @@ async function getAdresseById(req, res) {
   }
 }
 
+async function updateAdresseById(req, res) {
+  try {
+    const { id } = req.params;
+    const { strasse, hausnummer, plz, stadt } = req.body;
+
+    if (!strasse || !hausnummer || !plz || !stadt) {
+      return res.status(400).json({
+        error: 'Missing required Adresse fields'
+      });
+    }
+
+    const existing = await selectAdresseById(id);
+
+    if (!existing) {
+      return res.status(404).json({
+        error: 'Adresse not found'
+      });
+    }
+
+    const hasChanges =
+      existing.strasse !== strasse ||
+      existing.hausnummer !== hausnummer ||
+      existing.plz !== plz ||
+      existing.stadt !== stadt;
+
+    if (!hasChanges) {
+      return res.status(200).json({
+        message: 'No changes detected'
+      });
+    }
+
+    await updateAdresse,
+(id, {
+      strasse,
+      hausnummer,
+      plz,
+      stadt
+    });
+
+    res.status(200).json({
+      message: 'Adresse successfully updated'
+    });
+
+  } catch (err) {
+    console.error('Error updating Adresse:', err);
+    res.status(500).json({
+      error: 'Database update failed',
+      details: err.message
+    });
+  }
+}
+
 async function deleteAdresseById(req, res) {
   try {
     const { id } = req.params;
@@ -99,5 +152,6 @@ async function deleteAdresseById(req, res) {
 module.exports = { 
   addAdresse,
   getAdresseById,
+  updateAdresseById,
   deleteAdresseById
 };
