@@ -1,16 +1,20 @@
-document.addEventListener('DOMContentLoaded', () => {
+function initVerwaltung() {
+    saveSchueler();
     loadPruefungsausschuesse();
-    loadSchueler();
-});
+    savePruefungsausschuss();
+}
+
+initVerwaltung();
+
 
 /* PRÜFUNGSAUSSCHUSS SPEICHERN */
 
-document.addEventListener('DOMContentLoaded', () => {
+function savePruefungsausschuss() {
     const form = document.getElementById('pruefungsausschussForm');
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const data = Object.fromEntries(new FormData(form));
-
+    
         try {
             const res = await fetch('/api/pruefungsausschuss/add', {
                 method: 'POST',
@@ -25,7 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Fehler beim Senden: ' + err.message);
         }
     });
-});
+
+    loadPage("dashboard/dashboard");
+}
 
 /* PRÜFUNGSAUSSCHUSS AUSGEBEN */
 
@@ -51,16 +57,15 @@ async function loadPruefungsausschuesse() {
     }
 }
 
-
 /* SCHÜLER + AUSBILDER SPEICHERN */
-document.addEventListener('DOMContentLoaded', () => {
+function saveSchueler() {
     const form = document.getElementById('schuelerForm');
-
+    
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-
+    
         const formData = Object.fromEntries(new FormData(form));
-
+    
         try {
             /* ADRESSE SPEICHERN */
             const adresseRes = await fetch('/api/adresse/add', {
@@ -73,10 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     ort: formData.ort
                 })
             });
-
+    
             const adresseResult = await adresseRes.json();
             const adresseId = adresseResult.id;
-
+    
             /* ANSPRECHPARTNER SPEICHERN */
             const ansprechpartnerRes = await fetch('/api/ansprechpartner/add', {
                 method: 'POST',
@@ -88,10 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     telefon: formData.telefon
                 })
             });
-
+    
             const ansprechpartnerResult = await ansprechpartnerRes.json();
             const ansprechpartnerId = ansprechpartnerResult.id;
-
+    
             /* SCHÜLER SPEICHERN */
             const schuelerRes = await fetch('/api/schueler/add', {
                 method: 'POST',
@@ -104,12 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     pruefungsausschuss_id: formData.pruefungsausschuss_id || null
                 })
             });
-
+    
             alert('Schüler erfolgreich gespeichert');
-
+    
         } catch (err) {
             console.error(err);
             alert('Fehler beim Speichern');
         }
     });
-});
+
+    loadPage("dashboard/dashboard");
+}

@@ -1,6 +1,7 @@
 function initDashboard() {
     loadPruefungsausschuesse();
     loadSchueler();
+    initDeleteButtons();
 }
 
 initDashboard();
@@ -16,7 +17,7 @@ function loadPruefungsausschuesse() {
         renderItem: pa => `
             <span>${pa.bezeichnung}</span>
             <div class="btnWrapper">
-                <button class="btnDelete">
+                <button data-id="${pa.ID}" data-type="pruefungsausschuss" class="btnDelete">
                     <img src="../../assets/trash.svg" alt="Prüfungsausschuss löschen">
                 </button>
                 <button class="btnChange">
@@ -24,7 +25,7 @@ function loadPruefungsausschuesse() {
                 </button>
             </div>
         `
-    });
+    }); 
 }
 
 /* SCHÜLER AUSGEBEN */
@@ -37,7 +38,7 @@ function loadSchueler() {
         renderItem: s => `
             <span>${s.vorname} ${s.name}</span>
             <div class="btnWrapper">
-                <button class="btnDelete">
+                <button data-id="${s.ID}" data-type="schueler" class="btnDelete">
                     <img src="../../assets/trash.svg" alt="Schüler löschen">
                 </button>
                 <button class="btnChange">
@@ -80,4 +81,42 @@ async function loadList({
         list.innerHTML = `<li class="empty error">Fehler beim Laden</li>`;
         console.error(err);
     }
+}
+
+/* ALLGEMEINE LÖSCHEFUNKTION */
+function initDeleteButtons() {
+    const lists = ['pruefungsausschussList', 'schuelerList'];
+
+    lists.forEach(listId => {
+        const list = document.getElementById(listId);
+        
+        if (!list) return;
+
+        list.addEventListener('click', async (e) => {
+            const button = e.target.closest('.btnDelete');
+            if (!button) return;
+
+            const id = button.dataset.id;
+            const type = button.dataset.type;
+            if (!id || !type) return;
+
+            const confirmDelete = confirm('Möchten Sie diesen Eintrag wirklich löschen?');
+            if (!confirmDelete) return;
+
+            try {
+                const res = await fetch(`/api/${type}/delete/id/${id}`, {
+                    method: 'GET'
+                });
+                if (!res.ok) throw new Error('Löschen fehlgeschlagen');
+
+                // Liste neu laden
+                if (type === 'schueler') loadSchueler();
+                else loadPruefungsausschuesse();
+
+            } catch (err) {
+                console.error(err);
+                alert('Fehler beim Löschen');
+            }
+        });
+    });
 }
